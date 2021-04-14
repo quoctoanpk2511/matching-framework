@@ -2,7 +2,7 @@ import abc
 import pandas as pd
 import csv
 
-from base.structures.data import Dataset, Document
+from base.structures.data import Dataset, Item
 
 class Reader:
     """
@@ -21,18 +21,36 @@ class CSVReader(Reader):
     def __init__(self, corpus_file):
         self.corpus_file = corpus_file
 
-    def read(self):
+    def read(self, **kwargs):
         dataset = Dataset()
 
         with open(self.corpus_file, encoding='utf-8') as file:
-            reader = csv.reader(file, delimiter='\t')
+            # reader = csv.reader(file)
+            reader = csv.DictReader(file)
             for row in reader:
-                document = Document()
-                # document.parts['abstract'] = Part(row[1])
-                dataset.documents[row[0]] = document
+                item = Item()
+                # for feature in row:
+                #
+                #     item.documents[feature] =
+                #     dataset.items[feature] = item
+                # print(row, "-", row[0], "-", type(row))
+                # docid, title, abstract, a, b = row
+                # print(title)
+                # item = Item()
+                # item.documents = row
+                print(row)
+                # dataset.items[row]
+                dataset.items.update(row)
+                # print(item)
+            # item = Item((row[0], row[1:]) for row in reader)
+            # print(item.documents)
 
         return dataset
 
-# reader1 = CSVReader('pricerunner_aggregate.csv')
-# data1 = reader1.read()
-# print(list(data1.documents.items())[1])
+    def read1(self, **kwargs):
+        columns = []
+        for key, value in kwargs.items():
+            columns.append(value)
+        data = pd.read_csv(self.corpus_file)
+        df = pd.DataFrame(data, columns=columns)
+        return df
