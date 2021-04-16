@@ -1,5 +1,6 @@
 Id,Name,Course,City,Session
-21,Mark,Python,London,Morning
-22,John,Python,Tokyo,Evening
-23,Sam,Python,Paris,Morning
-32,Shaun,Java,Tokyo,Morning
+21,Mark A B,Python,London,Morning
+22,John C D,Python,Tokyo,Evening
+23,Sam E F,Python,Paris,Morning
+25,,Python,Hanoi,Morning
+32,Shaun G A,Java,Tokyo,Morning

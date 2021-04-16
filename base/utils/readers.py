@@ -2,7 +2,7 @@ import abc
 import pandas as pd
 import csv
 
-from base.structures.data import Dataset, Item
+from base.structures.data import Dataset, Item, DataRaw
 
 class Reader:
     """
@@ -39,7 +39,7 @@ class CSVReader(Reader):
                 # item = Item()
                 # item.documents = row
                 print(row)
-                # dataset.items[row]
+                dataset.items[row]
                 dataset.items.update(row)
                 # print(item)
             # item = Item((row[0], row[1:]) for row in reader)
@@ -54,3 +54,17 @@ class CSVReader(Reader):
         data = pd.read_csv(self.corpus_file)
         df = pd.DataFrame(data, columns=columns)
         return df
+
+    def read2(self):
+        data = Dataset()
+        df = pd.read_csv(self.corpus_file)
+        data.items = tuple(tuple(row) for row in df.values)
+        data.features = df.columns.values
+        return data
+
+    def read3(self):
+        data = DataRaw()
+        df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
+        for column in df.columns.values:
+            data.items[column] = df[column].values
+        return data
