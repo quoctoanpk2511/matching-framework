@@ -1,27 +1,27 @@
 from collections import OrderedDict
 
-class Dataset:
-    """
-    Class representing a group of items.
-    """
-
-    def __init__(self):
-        """
-        items the dataset consists of, encoded as a dictionary
-        """
-        # self.items = OrderedDict()
-        # self.items = {}
-        self.items = ()
-        self.features = []
-
-    # def parts(self):
-    #     for document in self:
-    #         for part in document:
-    #             yield part
-
-    # def parts1(self):
-    #     for document in self:
-    #         yield document
+# class Dataset:
+#     """
+#     Class representing a group of items.
+#     """
+#
+#     def __init__(self):
+#         """
+#         items the dataset consists of, encoded as a dictionary
+#         """
+#         # self.items = OrderedDict()
+#         # self.items = {}
+#         self.items = ()
+#         self.features = []
+#
+#     # def parts(self):
+#     #     for document in self:
+#     #         for part in document:
+#     #             yield part
+#
+#     # def parts1(self):
+#     #     for document in self:
+#     #         yield document
 
 class Item:
     """
@@ -49,7 +49,7 @@ class MatchingData:
         self.datas = {}
         self.tokens = {}
 
-class DataRaw:
+class Dataset:
 
     def __init__(self):
         self.items = {}

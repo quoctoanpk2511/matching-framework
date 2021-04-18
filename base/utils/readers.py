@@ -2,7 +2,7 @@ import abc
 import pandas as pd
 import csv
 
-from base.structures.data import Dataset, Item, DataRaw
+from base.structures.data import Dataset, Item
 
 class Reader:
     """
@@ -63,7 +63,7 @@ class CSVReader(Reader):
         return data
 
     def read3(self):
-        data = DataRaw()
+        data = Dataset()
         df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
         for column in df.columns.values:
             data.items[column] = df[column].values

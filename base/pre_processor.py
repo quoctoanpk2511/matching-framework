@@ -23,7 +23,7 @@ class PreProcessorABC():
 
 ####### test csv
 from base.utils.readers import CSVReader
-from base.structures.data import Dataset, Document, Item, MatchingData, DataRaw
+from base.structures.data import Dataset, Document, Item, MatchingData
 from base.preprocess.tokenizers import GenericTokenizer, CustomTokenizer
 from nltk.tokenize import word_tokenize
 

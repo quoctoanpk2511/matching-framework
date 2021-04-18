@@ -3,7 +3,7 @@ from typing import Dict, List
 
 import nltk
 
-from base.structures.data import Dataset, DataRaw, MatchingData
+from base.structures.data import Dataset, MatchingData
 
 
 class Tokenizer:
