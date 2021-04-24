@@ -63,6 +63,64 @@ test = CountVectorizer(tokenizer=word_tokenize)
 test2 = test.fit_transform(list(data3.datas.get('Name')))
 print(test2)
 
+from base.structures.data import Dataset1
+print("read")
+test3 = reader1.read4()
+for k,v  in test3.documents.items():
+    print(k, v)
+    for v1 in v:
+        print(v1)
+
+print("parts")
+for part in (test3.parts()):
+    print(part)
+
+# print("test key value")
+# for k, v in test3.documents.items():
+#     print(k, v)
+#     for v1 in v:
+#         print(v1)
+
+# print("test parts")
+# for part in test3.parts():
+#     print(part)
+
+# print("test document")
+# for document in test3.documents.items():
+#     if document.
+#     print(document)
+
+print("test features")
+test3.set_features(['Name', 'City'])
+
+test4 = Dataset1()
+
+for k, v in test3.documents.items():
+    for feature in test3.features:
+        if k == feature:
+            test4.documents[k] = v
+print(test4.documents.items())
+
+for doc in test4:
+    print(doc)
+    for part in doc:
+        print(part)
+
+
+
+# if test3.features:
+#     print(True)
+
+
+# for part in test3.parts():
+#     if test3.features:
+#         for part in test3.featured_parts():
+#             print(part)
+
+# from base.preprocess.tokenizers import CustomTokenizer1
+# tokens1 = CustomTokenizer1(word_tokenize)
+# print(tokens1.tokenize(test3))
+
 # print(list(data1.items.items()))
 # for item in data1.items.items():
 #     print(item[0])

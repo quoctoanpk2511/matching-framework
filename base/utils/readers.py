@@ -2,7 +2,7 @@ import abc
 import pandas as pd
 import csv
 
-from base.structures.data import Dataset, Item
+from base.structures.data import Dataset, Item, Dataset1, Document
 
 class Reader:
     """
@@ -67,4 +67,18 @@ class CSVReader(Reader):
         df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
         for column in df.columns.values:
             data.items[column] = df[column].values
+        return data
+
+    def read4(self):
+        """
+        Read csv to ordereddict
+        """
+        data = Dataset1()
+        df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
+        row = df.iloc[0]
+        for column in df.columns.values:
+            doc = Document()
+            for index in df.index:
+                doc.parts[index] = df[column][index]
+            data.documents[column] = doc
         return data

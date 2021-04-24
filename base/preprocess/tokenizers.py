@@ -3,7 +3,7 @@ from typing import Dict, List
 
 import nltk
 
-from base.structures.data import Dataset, MatchingData
+from base.structures.data import Dataset, MatchingData, Token, Dataset1
 
 
 class Tokenizer:
@@ -63,3 +63,26 @@ class CustomTokenizer(Tokenizer):
             data.tokens[k] = list_token
         return data
 
+class CustomTokenizer1(Tokenizer):
+
+    def __init__(self, string_splitter_fun):
+        self.string_splitter_fun = string_splitter_fun
+        "A function that takes a string as input and returns a list/iterator of tokenized string items"
+
+    def tokenize_string(self, string):
+        return self.string_splitter_fun(string)
+
+    def tokenize(self, dataset: Dataset1):
+        """
+
+        """
+        for part in dataset.parts():
+            so_far = 0
+            part.sentences = []
+            for index, sentence_ in enumerate(part.sentences_):
+                part.sentences.append([])
+
+                for token_word in self.tokenize_string(sentence_):
+                    token_start = part.text.find(token_word, so_far)
+                    so_far = token_start + len(token_word)
+                    part.sentences[index].append(Token(token_word, token_start))
