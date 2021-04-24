@@ -48,14 +48,20 @@ for fe in data.features:
 
 data3 = MatchingData()
 data4 = reader1.read3()
-print(data4.items)
 for k, v in data4.items.items():
     if k == 'Name':
         data3.datas[k] = v
 print(data3.datas)
 tokens = CustomTokenizer(word_tokenize)
 print(tokens.tokenize(data3).tokens)
+from base.scores.vectorizers import FreqVectorizer
+print(list(data3.datas.get('Name')))
+# vectors = FreqVectorizer().vectorizing(data3)
 
+from sklearn.feature_extraction.text import CountVectorizer
+test = CountVectorizer(tokenizer=word_tokenize)
+test2 = test.fit_transform(list(data3.datas.get('Name')))
+print(test2)
 
 # print(list(data1.items.items()))
 # for item in data1.items.items():
