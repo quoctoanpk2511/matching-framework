@@ -1,51 +1,36 @@
 import abc
 import pandas as pd
-import csv
 
-from base.structures.data import Dataset, Item, Dataset1, Document, Part
-
+from base.structures.data import (
+    Dataset,
+    Data,
+    Document,
+)
 class Reader:
     """
+
     Abstract class for reading data in dataset format.
+
     """
 
     @abc.abstractmethod
     def read(self):
+        """
+
+        Returns: Dataset
+
+        """
         return
 
 class CSVReader(Reader):
     """
+
     Reader for csv file.
+
     """
 
     def __init__(self, corpus_file):
         self.corpus_file = corpus_file
-
-    def read(self, **kwargs):
-        dataset = Dataset()
-
-        with open(self.corpus_file, encoding='utf-8') as file:
-            # reader = csv.reader(file)
-            reader = csv.DictReader(file)
-            for row in reader:
-                item = Item()
-                # for feature in row:
-                #
-                #     item.documents[feature] =
-                #     dataset.items[feature] = item
-                # print(row, "-", row[0], "-", type(row))
-                # docid, title, abstract, a, b = row
-                # print(title)
-                # item = Item()
-                # item.documents = row
-                print(row)
-                dataset.items[row]
-                dataset.items.update(row)
-                # print(item)
-            # item = Item((row[0], row[1:]) for row in reader)
-            # print(item.documents)
-
-        return dataset
 
     def read1(self, **kwargs):
         columns = []
@@ -62,23 +47,22 @@ class CSVReader(Reader):
         data.features = df.columns.values
         return data
 
-    def read3(self):
-        data = Dataset()
-        df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
-        for column in df.columns.values:
-            data.items[column] = df[column].values
-        return data
+    # def read3(self):
+    #     data = Dataset()
+    #     df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
+    #     for column in df.columns.values:
+    #         data.items[column] = df[column].values
+    #     return data
 
-    def read4(self):
+    def read(self):
         """
-        Read csv to ordereddict
+        Read csv to Dataset()
         """
-        data = Dataset1()
+        dataset = Dataset()
         df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
-        row = df.iloc[0]
         for column in df.columns.values:
-            doc = Document()
+            data = Data()
             for index in df.index:
-                doc.parts[index] = Part(df[column][index])
-            data.documents[column] = doc
-        return data
+                data.documents[index] = Document(df[column][index])
+            dataset.datas[column] = data
+        return dataset

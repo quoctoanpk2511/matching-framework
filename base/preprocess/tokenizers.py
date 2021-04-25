@@ -1,14 +1,14 @@
 import abc
-from typing import Dict, List
-
 import nltk
 
-from base.structures.data import Dataset, MatchingData, Token, Dataset1
-
+from base.structures.data import (
+    Dataset,
+    Token,
+)
 
 class Tokenizer:
     """
-    Abstract class for tokenizing data.
+    Abstract class for splitting and tokenizing raw text.
     """
 
     @abc.abstractmethod
@@ -21,18 +21,21 @@ class Tokenizer:
 
 class GenericTokenizer(Tokenizer):
 
-    def __init__(self, split_func):
-        self.split_func = split_func
+    def __init__(self, splitter):
+        self.splitter = splitter
+        "A function that takes a string as input and returns a list/iterator of tokenized string items"
 
-    def tokenize_string(self, text):
-        return self.split_func(text)
+    def tokenize_string(self, string):
+        return self.splitter(string)
 
-    def tokenize(self, dataset):
-        corup = []
-        for text in dataset.items:
-            tokens = self.tokenize_string(text)
-            corup.append(tokens)
-        return corup
+    def tokenize(self, dataset: Dataset):
+
+        for document in dataset.documents():
+            document.tokens = []
+            for token_word in self.tokenize_string(document.text):
+                document.tokens.append(token_word)
+
+NLTK_TOKENIZER = GenericTokenizer(nltk.tokenize.word_tokenize)
 
 class StemTokenizer(Tokenizer):
 
@@ -45,38 +48,20 @@ class StemTokenizer(Tokenizer):
         stems = [stemmer.stem(t) for t in tokens]
         return stems
 
-class CustomTokenizer(Tokenizer):
-
-    def __init__(self, split_func):
-        self.split_func = split_func
-
-    def tokenize_string(self, text):
-        return self.split_func(text)
-
-    def tokenize(self, data: MatchingData):
-
-        for k, v in data.datas.items():
-            list_token = []
-            for text in v:
-                tokens = self.tokenize_string(text)
-                list_token.append(tokens)
-            data.tokens[k] = list_token
-        return data
-
-class CustomTokenizer1(Tokenizer):
-
-    def __init__(self, string_splitter_fun):
-        self.string_splitter_fun = string_splitter_fun
-        "A function that takes a string as input and returns a list/iterator of tokenized string items"
-
-    def tokenize_string(self, string):
-        return self.string_splitter_fun(string)
-
-    def tokenize(self, dataset: Dataset1):
-        """
-
-        """
-        for part in dataset.parts():
-            part.sentences = []
-            for token_word in self.tokenize_string(part.text):
-                part.sentences.append(token_word)
+# class CustomTokenizer(Tokenizer):
+#
+#     def __init__(self, split_func):
+#         self.split_func = split_func
+#
+#     def tokenize_string(self, text):
+#         return self.split_func(text)
+#
+#     def tokenize(self, data: MatchingData):
+#
+#         for k, v in data.datas.items():
+#             list_token = []
+#             for text in v:
+#                 tokens = self.tokenize_string(text)
+#                 list_token.append(tokens)
+#             data.tokens[k] = list_token
+#         return data

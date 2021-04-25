@@ -1,7 +1,9 @@
 import abc
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-
-from base.structures.data import Dataset, MatchingData
+from sklearn.feature_extraction.text import (
+    CountVectorizer,
+    TfidfVectorizer,
+)
+from base.structures.data import Dataset
 
 
 class Vectorizer:
@@ -15,7 +17,7 @@ class Vectorizer:
 
 class FreqVectorizer(Vectorizer):
 
-    def vectorize_string(self, dataset: MatchingData):
+    def vectorize_string(self, dataset: Dataset):
         count_vectorizer = CountVectorizer()
         return count_vectorizer.fit_transform(list(dataset.datas.values()))
 
