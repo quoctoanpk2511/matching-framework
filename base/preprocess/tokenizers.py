@@ -6,6 +6,7 @@ from base.structures.data import (
     Token,
 )
 
+
 class Tokenizer:
     """
     Abstract class for splitting and tokenizing raw text.
@@ -19,6 +20,7 @@ class Tokenizer:
     def tokenize(self, dataset):
         return
 
+
 class GenericTokenizer(Tokenizer):
 
     def __init__(self, splitter):
@@ -29,24 +31,37 @@ class GenericTokenizer(Tokenizer):
         return self.splitter(string)
 
     def tokenize(self, dataset: Dataset):
-
         for document in dataset.documents():
             document.tokens = []
             for token_word in self.tokenize_string(document.text):
                 document.tokens.append(token_word)
 
+
 NLTK_TOKENIZER = GenericTokenizer(nltk.tokenize.word_tokenize)
+
+
+class SimpleTokenizer(Tokenizer):
+
+    def tokenize_string(self, string):
+        str = string
+        return str.lower().split()
+
+    def tokenize(self, dataset):
+        for document in dataset.documents():
+            document.tokens = []
+            for token_word in self.tokenize_string(document.text):
+                document.tokens.append(token_word)
+
 
 class StemTokenizer(Tokenizer):
 
-    def __init__(self):
-        super().__init__()
-
     def tokenize(self, text, lang):
+
         stemmer = nltk.stem.snowball.SnowballStemmer(language=lang)
         tokens = [word for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
         stems = [stemmer.stem(t) for t in tokens]
         return stems
+
 
 # class CustomTokenizer(Tokenizer):
 #

@@ -1,32 +1,28 @@
 import abc
 import pandas as pd
-
 from base.structures.data import (
     Dataset,
     Data,
     Document,
 )
+
+
 class Reader:
     """
-
     Abstract class for reading data in dataset format.
-
     """
 
     @abc.abstractmethod
     def read(self):
         """
-
         Returns: Dataset
-
         """
         return
 
+
 class CSVReader(Reader):
     """
-
     Reader for csv file.
-
     """
 
     def __init__(self, corpus_file):

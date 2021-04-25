@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+
 class Dataset:
     """
     Class representing a group of items.
@@ -44,6 +45,7 @@ class Dataset:
             for document in data:
                 yield document
 
+
 class Data:
     """
     Class representing a single data.
@@ -66,6 +68,7 @@ class Data:
         for document_id, document in self.documents.items():
             yield document
 
+
 class Document:
     """
     Represent list of document in data.
@@ -80,6 +83,7 @@ class Document:
 
         self.tokens = []
         """list of tokens derived from text by calling Splitter and Tokenizer"""
+
 
 class Token:
 

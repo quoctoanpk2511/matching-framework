@@ -68,8 +68,16 @@ for k, v in test3.datas.items():
 # for document in test5.documents():
 #     print(document.text)
 
-from base.preprocess.tokenizers import GenericTokenizer, NLTK_TOKENIZER
+from base.preprocess.tokenizers import GenericTokenizer, NLTK_TOKENIZER, SimpleTokenizer
 tokens1 = NLTK_TOKENIZER
 tokens1.tokenize(test5)
 for document in test5.documents():
     print(document.tokens)
+
+tokens2 = SimpleTokenizer()
+tokens2.tokenize(test5)
+for document in test5.documents():
+    print(document.tokens)
+
+from base.scores.vectorizers import FreqVectorizer
+

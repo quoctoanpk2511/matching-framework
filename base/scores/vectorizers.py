@@ -15,11 +15,13 @@ class Vectorizer:
     def vectorizing(self, dataset):
         return
 
+
 class FreqVectorizer(Vectorizer):
 
-    def vectorize_string(self, dataset: Dataset):
+    def vectorize_string(self, dataset):
         count_vectorizer = CountVectorizer()
         return count_vectorizer.fit_transform(list(dataset.datas.values()))
+
 
 class TfidfVectorizer(Vectorizer):
 
