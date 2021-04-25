@@ -72,6 +72,8 @@ class Document:
 
     def __init__(self):
         self.parts = OrderedDict()
+        self.tokens = OrderedDict()
+        self.sentences = [[]]
         """
         parts the document consists of, encoded as a dictionary
         where the key (string) is the id of the part

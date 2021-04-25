@@ -77,12 +77,6 @@ class CustomTokenizer1(Tokenizer):
 
         """
         for part in dataset.parts():
-            so_far = 0
             part.sentences = []
-            for index, sentence_ in enumerate(part.sentences_):
-                part.sentences.append([])
-
-                for token_word in self.tokenize_string(sentence_):
-                    token_start = part.text.find(token_word, so_far)
-                    so_far = token_start + len(token_word)
-                    part.sentences[index].append(Token(token_word, token_start))
+            for token_word in self.tokenize_string(part.text):
+                part.sentences.append(token_word)

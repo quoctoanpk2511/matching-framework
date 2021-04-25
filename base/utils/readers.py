@@ -2,7 +2,7 @@ import abc
 import pandas as pd
 import csv
 
-from base.structures.data import Dataset, Item, Dataset1, Document
+from base.structures.data import Dataset, Item, Dataset1, Document, Part
 
 class Reader:
     """
@@ -79,6 +79,6 @@ class CSVReader(Reader):
         for column in df.columns.values:
             doc = Document()
             for index in df.index:
-                doc.parts[index] = df[column][index]
+                doc.parts[index] = Part(df[column][index])
             data.documents[column] = doc
         return data

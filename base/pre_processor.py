@@ -67,7 +67,7 @@ from base.structures.data import Dataset1
 print("read")
 test3 = reader1.read4()
 for k,v  in test3.documents.items():
-    print(k, v)
+    print(type(k))
     for v1 in v:
         print(v1)
 
@@ -101,10 +101,37 @@ for k, v in test3.documents.items():
             test4.documents[k] = v
 print(test4.documents.items())
 
-for doc in test4:
-    print(doc)
-    for part in doc:
-        print(part)
+# for doc in test4:
+#     print(doc)
+#     for part in doc:
+#         print(part)
+
+print("Doc")
+for doc in test3:
+    print(doc.parts)
+
+print("test 5")
+test5 = Dataset1()
+for k, v in test3.documents.items():
+    for feature in test3.features:
+        if k == feature:
+            test5.documents[k] = v
+# for doc in test5:
+#     # print(doc)
+#     # print(doc.parts)
+#     for part in doc:
+#         print(part.text)
+
+# print("part test 5")
+# for part in test5.parts():
+#     print(part.text)
+
+from base.preprocess.tokenizers import CustomTokenizer1
+tokens1 = CustomTokenizer1(word_tokenize)
+tokens1.tokenize(test5)
+for part in test5.parts():
+    print(part.text)
+    print(part.sentences)
 
 
 
