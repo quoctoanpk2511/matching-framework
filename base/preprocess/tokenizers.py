@@ -4,6 +4,8 @@ import nltk
 from base.structures.data import (
     Dataset,
     Token,
+    Dataset1,
+    MappingFeature,
 )
 
 
@@ -80,3 +82,16 @@ class StemTokenizer(Tokenizer):
 #                 list_token.append(tokens)
 #             data.tokens[k] = list_token
 #         return data
+
+
+class CustomTokenizer(Tokenizer):
+
+    def tokenize_string(self, string):
+        str = string
+        return str.lower().split()
+
+    def tokenize(self, dataset, mapping_features: MappingFeature):
+
+        for feature in mapping_features.features:
+            for e in dataset.entities:
+                print(e[feature])

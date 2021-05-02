@@ -3,7 +3,9 @@ from sklearn.feature_extraction.text import (
     CountVectorizer,
     TfidfVectorizer,
 )
-from base.structures.data import Dataset
+from base.structures.data import (
+    Dataset
+)
 
 
 class Vectorizer:
@@ -12,7 +14,7 @@ class Vectorizer:
     """
 
     @abc.abstractmethod
-    def vectorizing(self, dataset):
+    def vectorize(self, dataset):
         return
 
 
@@ -21,6 +23,12 @@ class FreqVectorizer(Vectorizer):
     def vectorize_string(self, dataset):
         count_vectorizer = CountVectorizer()
         return count_vectorizer.fit_transform(list(dataset.datas.values()))
+
+    def vectorize(self, dataset: Dataset):
+        count_vectorizer = CountVectorizer()
+        for data in dataset.datas.values():
+            data.tfidf_matrix = count_vectorizer.fit_transform(list[data.documents.values()])
+
 
 
 class TfidfVectorizer(Vectorizer):

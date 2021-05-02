@@ -4,6 +4,8 @@ from base.structures.data import (
     Dataset,
     Data,
     Document,
+    Dataset1,
+    Entity,
 )
 
 
@@ -61,4 +63,17 @@ class CSVReader(Reader):
             for index in df.index:
                 data.documents[index] = Document(df[column][index])
             dataset.datas[column] = data
+        return dataset
+
+    def readtoDataset1(self):
+        """
+        Read csv to Dataset()
+        """
+        dataset = Dataset1()
+        df = pd.read_csv(self.corpus_file, na_values='NaN', keep_default_na=False)
+        for entity in df.to_dict('records'):
+            enti = Entity()
+            # dataset.entities.append(Entity(entity))
+            enti.entity = entity
+            dataset.entities.append(entity)
         return dataset
