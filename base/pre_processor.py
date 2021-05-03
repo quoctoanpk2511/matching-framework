@@ -115,9 +115,9 @@ dataset2 = CSVReader('./data/students1.csv').readtoDataset1()
 #         print(k, v)
 
 mappingfeatures = MappingFeature()
-mappingfeatures.features = ['Name']
-mappingfeatures.features_left = ['Name']
-mappingfeatures.features_right = ['StdName']
+mappingfeatures.join_features = ['JoinName', 'JoinCity']
+mappingfeatures.features_left = ['Name', 'City']
+mappingfeatures.features_right = ['StdName', 'StdCity']
 
 # token = CustomTokenizer().tokenize(dataset1, mappingfeatures)
 
@@ -130,13 +130,43 @@ mappingfeatures.features_right = ['StdName']
 #     print(data)
 
 from base.structures.data import Dataset2
+from base.scores.vectorizers import Tf_IdfVectorizer
+from base.preprocess.tokenizers import CustomTokenizer
 import pandas as pd
 dataset3 = pd.read_csv('./data/students.csv')
 dataset4 = pd.read_csv('./data/students1.csv')
 
 dmap = DataMapping()
-m = Matcher(dmap)
+t = CustomTokenizer()
+tfidf = Tf_IdfVectorizer()
+
+m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf)
 m.add_data(dataset3, dataset4, mappingfeatures)
 m.match()
-print(m.data_left)
-print(m.data_right)
+# print(m.data_left)
+# print(m.data_right)
+from fuzzymatcher.record import RecordToMatch, Record
+
+# m.right_records = {}
+# cols = m.features_right.copy()
+# cols.append("id_right")
+# df = m.data_right[cols]
+# for r in df.iterrows():
+#     row = r[1]
+#     fields_dict = dict(row[m.features_right])
+#     this_id = row["id_right"]
+#     rec = Record(fields_dict, this_id, m)
+#     m.right_records[this_id] = rec
+# print(m.right_records)
+
+
+
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# for feature, records in m.records_join.items():
+#     token_list_by_dict = {}
+#     tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 3), tokenizer=CustomTokenizer.tokenize)
+#     tfidf_matrix = tfidf_vectorizer.fit_transform(list(records.values()))
+#     print(tfidf_vectorizer.get_feature_names())
+#     print(tfidf_matrix)
+# m.vectorizer.vectorize()
+

@@ -13,9 +13,16 @@ class Vectorizer:
        Abstract class for convert a collection of raw documents to a matrix of TF-IDF features.
     """
 
+    def add_data(self, matcher):
+        self.matcher = matcher
+
     @abc.abstractmethod
-    def vectorize(self, dataset):
-        return
+    def vectorize(self):
+        """
+
+        Returns: None
+
+        """
 
 
 class FreqVectorizer(Vectorizer):
@@ -30,11 +37,14 @@ class FreqVectorizer(Vectorizer):
             data.tfidf_matrix = count_vectorizer.fit_transform(list[data.documents.values()])
 
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from base.preprocess.tokenizers import CustomTokenizer
+class Tf_IdfVectorizer(Vectorizer):
 
-class TfidfVectorizer(Vectorizer):
-
-    def __init__(self, stop_words=None):
-        super.__init__(stop_words=stop_words)
-
-    def vectorizing(self):
-        pass
+    def vectorize(self):
+        for feature, records in self.matcher.records_join.items():
+            token_list_by_dict = {}
+            tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 3), tokenizer=self.matcher.tokenizer.tokenize)
+            tfidf_matrix = tfidf_vectorizer.fit_transform(list(records.values()))
+            print(tfidf_vectorizer.get_feature_names())
+            print(tfidf_matrix)

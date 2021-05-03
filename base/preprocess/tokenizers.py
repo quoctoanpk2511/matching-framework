@@ -6,6 +6,7 @@ from base.structures.data import (
     Token,
     Dataset1,
     MappingFeature,
+    Dataset2,
 )
 
 
@@ -14,13 +15,17 @@ class Tokenizer:
     Abstract class for splitting and tokenizing raw text.
     """
 
-    @abc.abstractmethod
-    def tokenize_string(self, string):
-        return
+    # @abc.abstractmethod
+    # def tokenize_string(self, string):
+    #     return
 
     @abc.abstractmethod
-    def tokenize(self, dataset):
-        return
+    def tokenize(self):
+        """
+
+        Returns: None
+
+        """
 
 
 class GenericTokenizer(Tokenizer):
@@ -86,12 +91,6 @@ class StemTokenizer(Tokenizer):
 
 class CustomTokenizer(Tokenizer):
 
-    def tokenize_string(self, string):
-        str = string
-        return str.lower().split()
-
-    def tokenize(self, dataset, mapping_features: MappingFeature):
-
-        for feature in mapping_features.features:
-            for e in dataset.entities:
-                print(e[feature])
+    def tokenize(self, text):
+        tokens = [word.lower() for word in text.split(' ')]
+        return tokens

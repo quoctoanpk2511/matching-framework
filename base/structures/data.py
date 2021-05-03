@@ -173,8 +173,13 @@ import pandas as pd
 class Dataset2(pd.DataFrame):
 
     def __init__(self, *args, **kwargs):
+        # use the __init__ method from DataFrame to ensure
+        # that we're inheriting the correct behavior
+        self.records = []
         super(Dataset2,self).__init__(*args, **kwargs)
 
+    # this method is makes it so our methods return an instance
+    # of ExtendedDataFrame, instead of a regular DataFrame
     @property
     def _constructor(self):
         return Dataset2
@@ -185,3 +190,10 @@ class Dataset2(pd.DataFrame):
     #         # dataset.entities.append(Entity(entity))
     #         enti.entity = entity
     #         dataset.entities.append(entity)
+
+    # def initiate_list_of_records(self, records, ids):
+    #     for col in self.columns[records]:
+    #         for id in ids:
+
+
+
