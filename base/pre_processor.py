@@ -115,7 +115,7 @@ dataset2 = CSVReader('./data/students1.csv').readtoDataset1()
 #         print(k, v)
 
 mappingfeatures = MappingFeature()
-mappingfeatures.join_features = ['JoinName', 'JoinCity']
+mappingfeatures.join_features = {'JoinName':0.5, 'JoinCity':0.5}
 mappingfeatures.features_left = ['Name', 'City']
 mappingfeatures.features_right = ['StdName', 'StdCity']
 
@@ -132,6 +132,7 @@ mappingfeatures.features_right = ['StdName', 'StdCity']
 from base.structures.data import Dataset2
 from base.scores.vectorizers import Tf_IdfVectorizer
 from base.preprocess.tokenizers import CustomTokenizer
+from base.scores.similarities import Cosine_Similarity
 import pandas as pd
 dataset3 = pd.read_csv('./data/students.csv')
 dataset4 = pd.read_csv('./data/students1.csv')
@@ -139,8 +140,9 @@ dataset4 = pd.read_csv('./data/students1.csv')
 dmap = DataMapping()
 t = CustomTokenizer()
 tfidf = Tf_IdfVectorizer()
+sim = Cosine_Similarity()
 
-m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf)
+m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf, similarity=sim)
 m.add_data(dataset3, dataset4, mappingfeatures)
 m.match()
 # print(m.data_left)
@@ -169,4 +171,4 @@ from fuzzymatcher.record import RecordToMatch, Record
 #     print(tfidf_vectorizer.get_feature_names())
 #     print(tfidf_matrix)
 # m.vectorizer.vectorize()
-
+print(m.similarity_matrix)

@@ -19,9 +19,7 @@ class Vectorizer:
     @abc.abstractmethod
     def vectorize(self):
         """
-
         Returns: None
-
         """
 
 
@@ -38,13 +36,13 @@ class FreqVectorizer(Vectorizer):
 
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-from base.preprocess.tokenizers import CustomTokenizer
 class Tf_IdfVectorizer(Vectorizer):
 
     def vectorize(self):
+        vector_dict = {}
         for feature, records in self.matcher.records_join.items():
             token_list_by_dict = {}
             tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 3), tokenizer=self.matcher.tokenizer.tokenize)
             tfidf_matrix = tfidf_vectorizer.fit_transform(list(records.values()))
-            print(tfidf_vectorizer.get_feature_names())
-            print(tfidf_matrix)
+            vector_dict[feature] = tfidf_matrix
+        return vector_dict

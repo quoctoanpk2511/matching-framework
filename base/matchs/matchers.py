@@ -2,16 +2,19 @@ from base.preprocess.features import DataMapping
 from base.structures.data import Dataset1, MappingFeature, Dataset2
 from base.preprocess.tokenizers import Tokenizer
 from base.scores.vectorizers import Vectorizer
+from base.scores.similarities import Similarity
 
 class Matcher():
 
     def __init__(self,
                  data_preprocessor = DataMapping(),
                  tokenizer = Tokenizer(),
-                 vectorizer = Vectorizer(),):
+                 vectorizer = Vectorizer(),
+                 similarity = Similarity()):
         self.data_preprocessor = data_preprocessor
         self.tokenizer = tokenizer
         self.vectorizer = vectorizer
+        self.similarity = similarity
 
     def add_data(self,
                  data_left,
@@ -55,7 +58,6 @@ class Matcher():
                 entity_dict = entity[feature]
                 feature_dict[entity_id] = entity_dict
             self.records_left.append(feature_dict)
-        print(self.records_left)
 
         self.records_right = []
         cols = self.features_right.copy()
@@ -69,19 +71,20 @@ class Matcher():
                 entity_dict = entity[feature]
                 feature_dict[entity_id] = entity_dict
             self.records_right.append(feature_dict)
-        print(self.records_right)
 
         self.records_join = {}
-        for i in range(0, len(self.records_left)):
+        for i in range(0, len(self.join_features)):
             join_record = {}
             join_record.update(self.records_left[i])
             join_record.update(self.records_right[i])
-            self.records_join[self.join_features[i]] = join_record
-            # print(self.join_features[i])
-        print(self.records_join)
+            self.records_join[list(self.join_features)[i]] = join_record
+
+    def get_count_entity(self):
+        return len(self.data_left) + len(self.data_right)
 
     def match(self):
         self.data_preprocessor.mapping()
         self.initiate_match_record()
         self.vectorizer.add_data(self)
-        self.vectorizer.vectorize()
+        self.similarity.add_data(self)
+        self.similarity.score(self.vectorizer.vectorize(), self.join_features)

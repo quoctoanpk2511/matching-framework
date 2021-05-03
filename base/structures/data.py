@@ -162,7 +162,7 @@ class Entity(dict):
 class MappingFeature:
 
     def __init__(self):
-        self.join_features = []
+        self.join_features = {}
 
         # self.id_left = id_left
         self.features_left = []
