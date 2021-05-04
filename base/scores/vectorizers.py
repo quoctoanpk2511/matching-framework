@@ -41,7 +41,6 @@ class Tf_IdfVectorizer(Vectorizer):
     def vectorize(self):
         vector_dict = {}
         for feature, records in self.matcher.records_join.items():
-            token_list_by_dict = {}
             tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 3), tokenizer=self.matcher.tokenizer.tokenize)
             tfidf_matrix = tfidf_vectorizer.fit_transform(list(records.values()))
             vector_dict[feature] = tfidf_matrix

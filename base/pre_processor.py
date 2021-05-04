@@ -9,7 +9,7 @@ from base.preprocess.tokenizers import GenericTokenizer
 from nltk.tokenize import word_tokenize
 
 # reader1 = CSVReader('./data/pricerunner_aggregate.csv')
-reader1 = CSVReader('./data/students.csv')
+# reader1 = CSVReader('./data/students.csv')
 
 # from base.structures.data import Dataset1
 # print("read")
@@ -83,7 +83,7 @@ from base.preprocess.tokenizers import GenericTokenizer, NLTK_TOKENIZER, SimpleT
 
 # test vectorizer chua xong
 from base.scores.vectorizers import FreqVectorizer
-freq = FreqVectorizer()
+# freq = FreqVectorizer()
 # freq.vectorize(test5)
 # for data in test5:
 #     print(data.documents.values())
@@ -107,17 +107,17 @@ from base.preprocess.tokenizers import CustomTokenizer
 from base.preprocess.features import DataMapping
 from base.matchs.matchers import Matcher
 
-dataset1 = CSVReader('./data/students.csv').readtoDataset1()
+dataset1 = CSVReader('./data/students.csv').read()
 
-dataset2 = CSVReader('./data/students1.csv').readtoDataset1()
+dataset2 = CSVReader('./data/students1.csv').read()
 # for e in dataset2.entities:
 #     for k, v in e.items():
 #         print(k, v)
 
-mappingfeatures = MappingFeature()
-mappingfeatures.join_features = {'JoinName':0.5, 'JoinCity':0.5}
-mappingfeatures.features_left = ['Name', 'City']
-mappingfeatures.features_right = ['StdName', 'StdCity']
+# mappingfeatures = MappingFeature()
+# mappingfeatures.join_features = {'JoinName':0.5, 'JoinCity':0.5}
+# mappingfeatures.features_left = ['Name', 'City']
+# mappingfeatures.features_right = ['StdName', 'StdCity']
 
 # token = CustomTokenizer().tokenize(dataset1, mappingfeatures)
 
@@ -130,12 +130,45 @@ mappingfeatures.features_right = ['StdName', 'StdCity']
 #     print(data)
 
 from base.structures.data import Dataset2
+from base.utils.readers import CSVReader, MySQLReader
 from base.scores.vectorizers import Tf_IdfVectorizer
 from base.preprocess.tokenizers import CustomTokenizer
 from base.scores.similarities import Cosine_Similarity
 import pandas as pd
-dataset3 = pd.read_csv('./data/students.csv')
-dataset4 = pd.read_csv('./data/students1.csv')
+
+#read from csv
+# dataset3 = pd.read_csv('./data/students.csv')
+# dataset4 = pd.read_csv('./data/students1.csv')
+
+#read from sql
+import environ
+import MySQLdb
+# Reading .env file
+env = environ.Env()
+environ.Env.read_env()
+
+# Connect to SQL Server
+mydb = MySQLdb.connect(
+    host=env('DATABASE_HOST'),
+    user=env('DATABASE_USER'),
+    passwd=env('DATABASE_PASSWORD'),
+    db=env('DATABASE_NAME'))
+
+mysql = MySQLReader(env('DATABASE_HOST'), env('DATABASE_USER'), env('DATABASE_PASSWORD'), env('DATABASE_NAME'))
+con = mysql.connect()
+query = "SELECT product_id, product_title, product.cluster_id FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11"
+dataset3 = mysql.read(query, con)
+
+# dataset3 = pd.read_sql('SELECT product_id, product_title, product.cluster_id FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11', con=mydb)
+dataset4 = pd.read_sql('SELECT product_id, product_title, product.cluster_id FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 5', con=mydb)
+
+# print(dataset3.shape)
+# print(dataset4.shape)
+
+mappingfeatures = MappingFeature()
+mappingfeatures.join_features = {'product_title':1}
+mappingfeatures.features_left = ['product_title']
+mappingfeatures.features_right = ['product_title']
 
 dmap = DataMapping()
 t = CustomTokenizer()
@@ -145,6 +178,7 @@ sim = Cosine_Similarity()
 m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf, similarity=sim)
 m.add_data(dataset3, dataset4, mappingfeatures)
 m.match()
+
 # print(m.data_left)
 # print(m.data_right)
 from fuzzymatcher.record import RecordToMatch, Record

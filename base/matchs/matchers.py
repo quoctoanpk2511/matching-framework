@@ -43,7 +43,7 @@ class Matcher():
         self.id_left = id_left
         self.id_right = id_right
 
-        self.data_preprocessor.matcher(self)
+        self.data_preprocessor.add_data(self)
 
     def initiate_match_record(self):
         self.records_left = []

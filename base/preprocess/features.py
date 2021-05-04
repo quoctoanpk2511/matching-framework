@@ -22,7 +22,7 @@ from base.structures.data import (
 
 class DataMapping:
 
-    def matcher(self, matcher):
+    def add_data(self, matcher):
         self.matcher = matcher
 
     def mapping(self):
