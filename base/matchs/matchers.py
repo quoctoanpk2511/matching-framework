@@ -1,5 +1,5 @@
 from base.preprocess.features import DataMapping
-from base.structures.data import Dataset1, MappingFeature, Dataset2
+from base.structures.data import Dataset, MappingFeature
 from base.preprocess.tokenizers import Tokenizer
 from base.scores.vectorizers import Vectorizer
 from base.scores.similarities import Similarity
@@ -20,8 +20,8 @@ class Matcher():
         self.cluster = cluster
 
     def add_data(self,
-                 data_left,
-                 data_right,
+                 data_left: Dataset,
+                 data_right: Dataset,
                  mapping_features: MappingFeature,
                  id_left = None,
                  id_right = None):
@@ -38,8 +38,8 @@ class Matcher():
         Returns:
 
         """
-        self.data_left = data_left.copy()
-        self.data_right = data_right.copy()
+        self.data_left = data_left.df.copy()
+        self.data_right = data_right.df.copy()
         self.join_features = mapping_features.join_features
         self.features_left = mapping_features.features_left
         self.features_right = mapping_features.features_right

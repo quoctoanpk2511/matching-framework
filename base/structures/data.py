@@ -1,199 +1,65 @@
-from collections import OrderedDict
+from pandas import DataFrame
 
 
-class Dataset:
+class Dataset():
     """
-    Class representing a group of items.
-
-    :type datas: dict
-    :type features: list
+    Class representing a dataset.
     """
 
     def __init__(self):
-
-        self.datas = OrderedDict()
-        """
-        datas the dataset consists of.
-        """
-        self.features = []
-        """
-        features of dataset.
         """
 
-
-    def __len__(self):
-        """
-        the length (size) of a dataset equals to the number of features it has
-        """
-        return len(self.datas)
-
-    def __iter__(self):
-        """
-        when iterating through the dataset iterate through each features
-        """
-        for data_id, data in self.datas.items():
-            yield data
-
-    def __contains__(self, item):
-        return item in self.datas
-
-    def set_features(self, features):
-        self.features = features
-
-    def documents(self):
-        for data in self:
-            for document in data:
-                yield document
-
-
-class Data:
-    """
-    Class representing a single data.
-
-    :type documents: dict
-    """
-    def __init__(self):
-        self.documents = OrderedDict()
-        """
-        documents the dataset consists of.
-        """
-        self.vectors = []
-        """
-        a document-term matrix
+        Args:
+            df: DataFrame
         """
 
-    def __eq__(self, other):
-        return self.get_size() == other.get_size()
+        self.df = DataFrame()
+        """Dataframe contain a dataset has been read by Reader"""
 
-    def __lt__(self, other):
-        return self.get_size() - other.get_size() < 0
-
-    def __iter__(self):
+    def get_list_features(self):
         """
-        when iterating through the document iterate through each part
-        """
-        for document_id, document in self.documents.items():
-            yield document
+        Method to get list of features from Dataframe.
 
-    def key_value_documents(self):
-        """yields iterator for partids"""
-        for document_id, document in self.documents.items():
-            yield document_id, document
+        Returns: List
+        """
+        return self.df.columns.values
 
     def entities(self):
-        for document in self.documents.values():
-            for e in document.text:
-                yield e
-
-
-class Document:
-    """
-    Represent list of document in data.
-
-    :type text: str
-    :type tokens: list[Token]
-    """
-
-    def __init__(self, text, is_abstract=True):
-        self.text = text
         """
-        the original raw text that the part is consisted of
-        """
-        self.tokens = []
-        """
-        list of tokens derived from text by calling Splitter and Tokenizer
+        Method to get list of entities from Dataframe
+
+        Returns: List
         """
 
+        list_of_entities = []
+        for row in self.df[self.get_list_features()].iterrows():
+            entity = row[1]
+            list_of_entities.append(dict(entity))
+        return list_of_entities
 
-class Token:
+    # def initiate_list_of_records(self, records, ids):
+    #     for col in self.df.columns[records]:
+    #         for id in ids:
 
-    def __init__(self, word, start):
-        self.word = word
-
-    def __repr__(self):
-        """
-        print calls to the class Token will print out the string contents of the word
-        """
-        return self.word
-
-class Dataset1:
-    """
-    Class representing a group of items.
-
-    :type entities: List<Dict>
-    :type features: List
-    """
-
-    def __init__(self):
-
-        self.entities = []
-        """
-        datas the dataset consists of.
-        """
-        self.features = []
-        """
-        features of dataset.
-        """
-
-
-    def __len__(self):
-        """
-        the length (size) of a dataset equals to the number of features it has
-        """
-        return len(self.entities)
-
-    def __iter__(self):
-        """
-        when iterating through the dataset iterate through each features
-        """
-        for data in self.entities:
-            yield data
-
-    def __contains__(self, item):
-        return item in self.entities
-
-
-class Entity(dict):
-
-    def __init__(self):
-
-        self.entity = {}
 
 class MappingFeature:
 
     def __init__(self):
+        """
+
+        Args:
+            join_features: Dict
+            feature_left: List
+            feature_right: List
+        """
         self.join_features = {}
+        """
+        A dictionary stores the feature as the key and weight of the feature as value.
+        This dictionary represents the mapping of features from feature_left and feature_right.
+        """
 
-        # self.id_left = id_left
         self.features_left = []
-        # self.id_right = id_right
+        """A list of dataset1's features is used for matching."""
+
         self.features_right = []
-
-import pandas as pd
-class Dataset2(pd.DataFrame):
-
-    def __init__(self, *args, **kwargs):
-        # use the __init__ method from DataFrame to ensure
-        # that we're inheriting the correct behavior
-        self.records = []
-        super(Dataset2,self).__init__(*args, **kwargs)
-
-    # this method is makes it so our methods return an instance
-    # of ExtendedDataFrame, instead of a regular DataFrame
-    @property
-    def _constructor(self):
-        return Dataset2
-
-    # def entities(self):
-    #     for entity in self.to_dict('records'):
-    #         enti = Entity()
-    #         # dataset.entities.append(Entity(entity))
-    #         enti.entity = entity
-    #         dataset.entities.append(entity)
-
-    # def initiate_list_of_records(self, records, ids):
-    #     for col in self.columns[records]:
-    #         for id in ids:
-
-
-
+        """A list of dataset2's features is used for matching."""

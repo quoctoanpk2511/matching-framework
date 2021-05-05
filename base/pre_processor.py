@@ -2,8 +2,7 @@
 from base.utils.readers import CSVReader
 from base.structures.data import (
     Dataset,
-    Data,
-    Document,
+    MappingFeature,
 )
 from base.preprocess.tokenizers import GenericTokenizer
 from nltk.tokenize import word_tokenize
@@ -102,7 +101,6 @@ from base.scores.vectorizers import FreqVectorizer
 #         print(e)
 
 #test Dataset1
-from base.structures.data import Dataset1, MappingFeature
 from base.preprocess.tokenizers import CustomTokenizer
 from base.preprocess.features import DataMapping
 from base.matchs.matchers import Matcher
@@ -129,7 +127,6 @@ dataset2 = CSVReader('./data/students1.csv').read()
 # for data in m.data_left:
 #     print(data)
 
-from base.structures.data import Dataset2
 from base.utils.readers import CSVReader, MySQLReader
 from base.scores.vectorizers import Tf_IdfVectorizer
 from base.preprocess.tokenizers import CustomTokenizer
@@ -157,11 +154,12 @@ mydb = MySQLdb.connect(
 
 mysql = MySQLReader(env('DATABASE_HOST'), env('DATABASE_USER'), env('DATABASE_PASSWORD'), env('DATABASE_NAME'))
 con = mysql.connect()
-query = "SELECT product_id, product_title, product.cluster_id FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11"
-dataset3 = mysql.read(query, con)
+query1 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11"
 
-# dataset3 = pd.read_sql('SELECT product_id, product_title, product.cluster_id FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11', con=mydb)
-dataset4 = pd.read_sql('SELECT product_id, product_title, product.cluster_id FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 5', con=mydb)
+dataset3 = mysql.read(query1, con)
+
+query2 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 5"
+dataset4 = mysql.read(query2, con=mydb)
 
 # print(dataset3.shape)
 # print(dataset4.shape)

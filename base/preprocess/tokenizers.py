@@ -3,10 +3,6 @@ import nltk
 
 from base.structures.data import (
     Dataset,
-    Token,
-    Dataset1,
-    MappingFeature,
-    Dataset2,
 )
 
 
