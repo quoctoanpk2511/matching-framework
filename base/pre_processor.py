@@ -134,6 +134,7 @@ from base.utils.readers import CSVReader, MySQLReader
 from base.scores.vectorizers import Tf_IdfVectorizer
 from base.preprocess.tokenizers import CustomTokenizer
 from base.scores.similarities import Cosine_Similarity
+from base.matchs.clusters import HierarchicalClustering
 import pandas as pd
 
 #read from csv
@@ -174,8 +175,9 @@ dmap = DataMapping()
 t = CustomTokenizer()
 tfidf = Tf_IdfVectorizer()
 sim = Cosine_Similarity()
+cluster = HierarchicalClustering()
 
-m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf, similarity=sim)
+m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf, similarity=sim, cluster=cluster)
 m.add_data(dataset3, dataset4, mappingfeatures)
 m.match()
 
@@ -205,4 +207,5 @@ from fuzzymatcher.record import RecordToMatch, Record
 #     print(tfidf_vectorizer.get_feature_names())
 #     print(tfidf_matrix)
 # m.vectorizer.vectorize()
-print(m.similarity_matrix)
+print(m.data_left)
+print(m.data_right)

@@ -3,6 +3,7 @@ from base.structures.data import Dataset1, MappingFeature, Dataset2
 from base.preprocess.tokenizers import Tokenizer
 from base.scores.vectorizers import Vectorizer
 from base.scores.similarities import Similarity
+from base.matchs.clusters import Cluster
 
 class Matcher():
 
@@ -10,11 +11,13 @@ class Matcher():
                  data_preprocessor = DataMapping(),
                  tokenizer = Tokenizer(),
                  vectorizer = Vectorizer(),
-                 similarity = Similarity()):
+                 similarity = Similarity(),
+                 cluster = Cluster(),):
         self.data_preprocessor = data_preprocessor
         self.tokenizer = tokenizer
         self.vectorizer = vectorizer
         self.similarity = similarity
+        self.cluster = cluster
 
     def add_data(self,
                  data_left,
@@ -79,12 +82,19 @@ class Matcher():
             join_record.update(self.records_right[i])
             self.records_join[list(self.join_features)[i]] = join_record
 
+    def initiate_list_id_record_join(self):
+        self.id_records_join = list(self.data_left['id_left'])
+        self.id_records_join.extend(list(self.data_right['id_right']))
+
     def get_count_entity(self):
         return len(self.data_left) + len(self.data_right)
 
     def match(self):
         self.data_preprocessor.mapping()
         self.initiate_match_record()
+        self.initiate_list_id_record_join()
         self.vectorizer.add_data(self)
         self.similarity.add_data(self)
         self.similarity.score(self.vectorizer.vectorize(), self.join_features)
+        self.cluster.add_data(self)
+        self.cluster.clustering()

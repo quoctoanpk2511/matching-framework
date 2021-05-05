@@ -37,7 +37,7 @@ class DataMapping:
             self.matcher.data_right['id_right'] = self.matcher.data_right[self.matcher.id_right]
 
     @staticmethod
-    def add_id(dataset: Dataset2, side):
+    def add_id(dataset, side):
         id_side = "id_" + side
         id_list = ["{}_{}".format(i, side) for i in range(0, len(dataset))]
         dataset[id_side] = id_list
