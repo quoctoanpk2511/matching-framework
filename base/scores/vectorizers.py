@@ -13,7 +13,7 @@ class Vectorizer:
        Abstract class for convert a collection of raw documents to a matrix of TF-IDF features.
     """
 
-    def add_data(self, matcher):
+    def matcher(self, matcher):
         self.matcher = matcher
 
     @abc.abstractmethod

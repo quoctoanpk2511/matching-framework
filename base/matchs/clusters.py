@@ -3,7 +3,7 @@ import abc
 
 class Cluster:
 
-    def add_data(self, matcher):
+    def matcher(self, matcher):
         self.matcher = matcher
 
     @abc.abstractmethod
