@@ -1,28 +1,28 @@
-import abc
-from base.structures.data import (
-    Dataset,
-    MappingFeature,
-)
+class DataPreprocessor:
+    """
+    Class to process and standardize the IDs of the dataset.
+    """
 
+    def matcher(self, matcher):
+        """
+        Add the match object on the Dataprocess.
 
-# class DataMapping:
-#     """
-#     Abstract class for mapping single or many dataset.
-#     """
-#
-#     @abc.abstractmethod
-#     def mapping(self):
-#         """
-#         Returns: None
-#         """
+        Args:
+            matcher: base.matchs.matchers.Matcher
 
+        Returns: None
 
-class DataMapping:
-
-    def add_data(self, matcher):
+        """
         self.matcher = matcher
+        """The matcher object"""
 
-    def mapping(self):
+    def id_preprocess(self):
+        """
+        Method to process the IDs of two dataset.
+
+        Returns: None
+
+        """
 
         if not self.matcher.id_left:
             self.add_id(self.matcher.data_left, "left")
@@ -34,7 +34,17 @@ class DataMapping:
             self.matcher.data_right['id_right'] = self.matcher.data_right[self.matcher.id_right]
 
     @staticmethod
-    def add_id(dataset, side):
+    def add_id(dataframe, side):
+        """
+        Static method of DataPreprocessor to add new IDs into the dataset if it is not has IDs
+
+        Args:
+            dataset: DataFrame
+            side: String
+
+        Returns: None
+
+        """
         id_side = "id_" + side
-        id_list = ["{}_{}".format(i, side) for i in range(0, len(dataset))]
-        dataset[id_side] = id_list
+        id_list = ["{}_{}".format(i, side) for i in range(0, len(dataframe))]
+        dataframe[id_side] = id_list

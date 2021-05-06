@@ -102,7 +102,7 @@ from base.scores.vectorizers import FreqVectorizer
 
 #test Dataset1
 from base.preprocess.tokenizers import CustomTokenizer
-from base.preprocess.features import DataMapping
+from base.preprocess.data_preprocessor import DataPreprocessor
 from base.matchs.matchers import Matcher
 
 dataset1 = CSVReader('./data/students.csv').read()
@@ -168,7 +168,7 @@ mappingfeatures.join_features = {'product_title':1}
 mappingfeatures.features_left = ['product_title']
 mappingfeatures.features_right = ['product_title']
 
-dmap = DataMapping()
+dmap = DataPreprocessor()
 t = CustomTokenizer()
 tfidf = Tf_IdfVectorizer()
 sim = Cosine_Similarity()

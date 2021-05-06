@@ -1,4 +1,4 @@
-from base.preprocess.features import DataMapping
+from base.preprocess.data_preprocessor import DataPreprocessor
 from base.structures.data import Dataset, MappingFeature
 from base.preprocess.tokenizers import Tokenizer
 from base.scores.vectorizers import Vectorizer
@@ -8,11 +8,11 @@ from base.matchs.clusters import Cluster
 class Matcher():
 
     def __init__(self,
-                 data_preprocessor = DataMapping(),
+                 data_preprocessor = DataPreprocessor(),
                  tokenizer = Tokenizer(),
                  vectorizer = Vectorizer(),
                  similarity = Similarity(),
-                 cluster = Cluster(),):
+                 cluster = Cluster(), ):
         self.data_preprocessor = data_preprocessor
         self.tokenizer = tokenizer
         self.vectorizer = vectorizer
@@ -46,7 +46,7 @@ class Matcher():
         self.id_left = id_left
         self.id_right = id_right
 
-        self.data_preprocessor.add_data(self)
+        self.data_preprocessor.matcher(self)
 
     def initiate_match_record(self):
         self.records_left = []
@@ -90,7 +90,7 @@ class Matcher():
         return len(self.data_left) + len(self.data_right)
 
     def match(self):
-        self.data_preprocessor.mapping()
+        self.data_preprocessor.id_preprocess()
         self.initiate_match_record()
         self.initiate_list_id_record_join()
         self.vectorizer.matcher(self)
