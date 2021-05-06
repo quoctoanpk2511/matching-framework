@@ -1,16 +1,25 @@
-import abc
+from abc import ABC, abstractmethod
 import pandas as pd
 from base.structures.data import (
     Dataset,
 )
 
 
-class Reader:
+class Reader(ABC):
     """
     Abstract class for reading data in dataset format.
     """
 
-    @abc.abstractmethod
+    def __init__(self):
+        """
+
+        Args:
+            dataset: Dataset
+        """
+        super().__init__()
+        self.dataset = Dataset()
+
+    @abstractmethod
     def read(self):
         """
         Returns: Dataset
@@ -29,14 +38,13 @@ class CSVReader(Reader):
         Args:
             csv_file: String
         """
+        super().__init__()
         self.csv_file = csv_file
         """Name of csv file that contains a dataset"""
 
     def read(self):
-        df = pd.read_csv(self.csv_file, na_values='NaN', keep_default_na=False)
-        dataset = Dataset()
-        dataset.df = df
-        return dataset
+        self.dataset.df = pd.read_csv(self.csv_file, na_values='NaN', keep_default_na=False)
+        return self.dataset
 
 
 import MySQLdb
@@ -45,7 +53,7 @@ class MySQLReader(Reader):
     Class reader for read data from MySQL database.
     """
 
-    def __init__(self, db_host, db_user, db_passwd, db_name):
+    def __init__(self, db_host, db_user, db_passwd, db_name, sql):
         """
 
         Args:
@@ -54,26 +62,29 @@ class MySQLReader(Reader):
             db_passwd: String
             db_name: String
         """
+        super().__init__()
         self.db_host = db_host
         """Database host name to connect"""
         self.db_user = db_user
+        """Database user name to connect"""
         self.db_passwd = db_passwd
+        """Database password to connect"""
         self.db_name = db_name
+        """Database name to connect"""
+        self.sql = sql
+        """Query to select data from MySQL database"""
+        self.connect()
 
-    @staticmethod
     def connect(self):
         """
         Method for create a connection to the MySQL database.
         """
-        con = MySQLdb.connect(
+        self.con = MySQLdb.connect(
             host=self.db_host,
             user=self.db_user,
             passwd=self.db_passwd,
             db=self.db_name)
-        return con
 
-    def read(self, query, con):
-        df = pd.read_sql(query, con=con)
-        dataset = Dataset()
-        dataset.df = df
-        return dataset
+    def read(self):
+        self.dataset.df = pd.read_sql(sql=self.sql, con=self.con)
+        return self.dataset

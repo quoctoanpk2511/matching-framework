@@ -146,20 +146,19 @@ env = environ.Env()
 environ.Env.read_env()
 
 # Connect to SQL Server
-mydb = MySQLdb.connect(
-    host=env('DATABASE_HOST'),
-    user=env('DATABASE_USER'),
-    passwd=env('DATABASE_PASSWORD'),
-    db=env('DATABASE_NAME'))
-
-mysql = MySQLReader(env('DATABASE_HOST'), env('DATABASE_USER'), env('DATABASE_PASSWORD'), env('DATABASE_NAME'))
-con = mysql.connect()
+# mydb = MySQLdb.connect(
+#     host=env('DATABASE_HOST'),
+#     user=env('DATABASE_USER'),
+#     passwd=env('DATABASE_PASSWORD'),
+#     db=env('DATABASE_NAME'))
 query1 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11"
-
-dataset3 = mysql.read(query1, con)
+mysql = MySQLReader(env('DATABASE_HOST'), env('DATABASE_USER'), env('DATABASE_PASSWORD'), env('DATABASE_NAME'), query1)
+# con = mysql.connect()
+dataset3 = mysql.read()
 
 query2 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 5"
-dataset4 = mysql.read(query2, con=mydb)
+mysql = MySQLReader(env('DATABASE_HOST'), env('DATABASE_USER'), env('DATABASE_PASSWORD'), env('DATABASE_NAME'), query2)
+dataset4 = mysql.read()
 
 # print(dataset3.shape)
 # print(dataset4.shape)
