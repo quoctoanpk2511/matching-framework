@@ -1,92 +1,108 @@
 import abc
-import nltk
-
-from base.structures.data import (
-    Dataset,
-)
 
 
-class Tokenizer:
+class Tokenizer():
     """
     Abstract class for splitting and tokenizing raw text.
     """
 
-    # @abc.abstractmethod
-    # def tokenize_string(self, string):
-    #     return
+    def __init__(self):
+        super().__init__()
 
-    @abc.abstractmethod
-    def tokenize(self):
+    def matcher(self, matcher):
         """
+        Add the match object on the Tokenizer.
+
+        Args:
+            matcher: base.matchs.matchers.Matcher
 
         Returns: None
 
         """
+        self.matcher = matcher
+        """The matcher object"""
+
+    @abc.abstractmethod
+    def tokenize_string(self, text):
+        """
+        An abstract method to tokenize string.
+
+        Args:
+            string: String
+
+        Returns: List
+
+        """
+        return
+
+    def tokenize(self):
+        """
+        Method to tokenize all feature of dataset by calling tokenize_string() function.
+        Returns a dictionary with feature as key and list tokens as value.
+
+        Returns: Dict
+
+        """
+        dict_of_list_token = {}
+        for feature, records in self.matcher.records_join.items():
+            list_token = []
+            for record in records.values():
+                list_token.append(self.tokenize_string(record))
+            dict_of_list_token[feature] = list_token
+        return dict_of_list_token
 
 
 class GenericTokenizer(Tokenizer):
+    """
+    A generic tokenizer.
+    """
 
     def __init__(self, splitter):
+
+        super().__init__()
         self.splitter = splitter
-        "A function that takes a string as input and returns a list/iterator of tokenized string items"
+        """Splitter function"""
 
-    def tokenize_string(self, string):
-        return self.splitter(string)
+    def tokenize_string(self, text):
+        """
+        A function that takes a string as input and returns a list/iterator of tokenized string items
 
-    def tokenize(self, dataset: Dataset):
-        for document in dataset.documents():
-            document.tokens = []
-            for token_word in self.tokenize_string(document.text):
-                document.tokens.append(token_word)
+        Args:
+            text: String
 
+        Returns: List
 
-NLTK_TOKENIZER = GenericTokenizer(nltk.tokenize.word_tokenize)
-
-
-class SimpleTokenizer(Tokenizer):
-
-    def tokenize_string(self, string):
-        str = string
-        return str.lower().split()
-
-    def tokenize(self, dataset):
-        for document in dataset.documents():
-            document.tokens = []
-            for token_word in self.tokenize_string(document.text):
-                document.tokens.append(token_word)
+        """
+        return self.splitter(text)
 
 
-class StemTokenizer(Tokenizer):
-
-    def tokenize(self, text, lang):
-
-        stemmer = nltk.stem.snowball.SnowballStemmer(language=lang)
-        tokens = [word for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
-        stems = [stemmer.stem(t) for t in tokens]
-        return stems
+from nltk import word_tokenize
+NLTK_TOKENIZER = GenericTokenizer(word_tokenize)
 
 
-# class CustomTokenizer(Tokenizer):
-#
-#     def __init__(self, split_func):
-#         self.split_func = split_func
-#
-#     def tokenize_string(self, text):
-#         return self.split_func(text)
-#
-#     def tokenize(self, data: MatchingData):
-#
-#         for k, v in data.datas.items():
-#             list_token = []
-#             for text in v:
-#                 tokens = self.tokenize_string(text)
-#                 list_token.append(tokens)
-#             data.tokens[k] = list_token
-#         return data
-
-
-class CustomTokenizer(Tokenizer):
+class DefaultTokenizer(Tokenizer):
+    """
+    Class default for tokenizer
+    """
 
     def tokenize(self, text):
         tokens = [word.lower() for word in text.split(' ')]
         return tokens
+
+from nltk import word_tokenize
+from nltk.stem.snowball import SnowballStemmer
+class StemTokenizer(Tokenizer):
+    """
+    A class for tokenizer and stemmer.
+    """
+
+    def __init__(self, language):
+        super().__init__()
+        self.language = language
+        """Language used for stemmer"""
+
+    def tokenize_string(self, text):
+        stemmer = SnowballStemmer(language=self.language)
+        tokens = [word for word in word_tokenize(text)]
+        stems = [stemmer.stem(t) for t in tokens]
+        return stems

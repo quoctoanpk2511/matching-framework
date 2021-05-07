@@ -67,7 +67,7 @@ from nltk.tokenize import word_tokenize
 # for document in test5.documents():
 #     print(document.text)
 
-from base.preprocess.tokenizers import GenericTokenizer, NLTK_TOKENIZER, SimpleTokenizer
+from base.preprocess.tokenizers import GenericTokenizer, NLTK_TOKENIZER
 # test nltk tokenizer : done
 # tokens1 = NLTK_TOKENIZER
 # tokens1.tokenize(test5)
@@ -101,7 +101,7 @@ from base.scores.vectorizers import FreqVectorizer
 #         print(e)
 
 #test Dataset1
-from base.preprocess.tokenizers import CustomTokenizer
+from base.preprocess.tokenizers import DefaultTokenizer
 from base.preprocess.data_preprocessor import DataPreprocessor
 from base.matchs.matchers import Matcher
 
@@ -129,7 +129,7 @@ dataset2 = CSVReader('./data/students1.csv').read()
 
 from base.utils.readers import CSVReader, MySQLReader
 from base.scores.vectorizers import Tf_IdfVectorizer
-from base.preprocess.tokenizers import CustomTokenizer
+from base.preprocess.tokenizers import DefaultTokenizer, GenericTokenizer, NLTK_TOKENIZER
 from base.scores.similarities import Cosine_Similarity
 from base.matchs.clusters import HierarchicalClustering
 import pandas as pd
@@ -152,12 +152,20 @@ environ.Env.read_env()
 #     passwd=env('DATABASE_PASSWORD'),
 #     db=env('DATABASE_NAME'))
 query1 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11"
-mysql = MySQLReader(env('DATABASE_HOST'), env('DATABASE_USER'), env('DATABASE_PASSWORD'), env('DATABASE_NAME'), query1)
+mysql = MySQLReader(env('DATABASE_HOST'),
+                    env('DATABASE_USER'),
+                    env('DATABASE_PASSWORD'),
+                    env('DATABASE_NAME'),
+                    query1)
 # con = mysql.connect()
 dataset3 = mysql.read()
 
 query2 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 5"
-mysql = MySQLReader(env('DATABASE_HOST'), env('DATABASE_USER'), env('DATABASE_PASSWORD'), env('DATABASE_NAME'), query2)
+mysql = MySQLReader(env('DATABASE_HOST'),
+                    env('DATABASE_USER'),
+                    env('DATABASE_PASSWORD'),
+                    env('DATABASE_NAME'),
+                    query2)
 dataset4 = mysql.read()
 
 # print(dataset3.shape)
@@ -169,7 +177,7 @@ mappingfeatures.features_left = ['product_title']
 mappingfeatures.features_right = ['product_title']
 
 dmap = DataPreprocessor()
-t = CustomTokenizer()
+t = DefaultTokenizer()
 tfidf = Tf_IdfVectorizer()
 sim = Cosine_Similarity()
 cluster = HierarchicalClustering()
@@ -206,3 +214,12 @@ from fuzzymatcher.record import RecordToMatch, Record
 # m.vectorizer.vectorize()
 print(m.data_left)
 print(m.data_right)
+
+# m.tokenizer = NLTK_TOKENIZER
+# m.tokenizer.matcher(m)
+# # print(m.tokenizer.tokenize())
+#
+# from base.preprocess.tokenizers import StemTokenizer
+# m.tokenizer = StemTokenizer("english")
+# m.tokenizer.matcher(m)
+# print(m.tokenizer.tokenize())
