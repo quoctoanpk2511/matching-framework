@@ -212,8 +212,8 @@ from fuzzymatcher.record import RecordToMatch, Record
 #     print(tfidf_vectorizer.get_feature_names())
 #     print(tfidf_matrix)
 # m.vectorizer.vectorize()
-print(m.data_left)
-print(m.data_right)
+print(m.data_left.df)
+print(m.data_right.df)
 
 # m.tokenizer = NLTK_TOKENIZER
 # m.tokenizer.matcher(m)

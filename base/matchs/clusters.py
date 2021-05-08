@@ -28,11 +28,11 @@ class HierarchicalClustering(Cluster):
 
     def add_cluster(self, clusters):
         cluster_left, cluster_right = self.split_list(clusters)
-        self.matcher.data_left['Cluster'] = cluster_left
-        self.matcher.data_right['Cluster'] = cluster_right
+        self.matcher.data_left.df['Cluster'] = cluster_left
+        self.matcher.data_right.df['Cluster'] = cluster_right
 
     def split_list(self, clusters):
-        part = len(self.matcher.data_left['id_left'])
+        part = len(self.matcher.data_left.df['id_left'])
         return clusters[:part], clusters[part:]
 
 

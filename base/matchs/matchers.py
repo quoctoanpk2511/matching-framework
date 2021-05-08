@@ -38,8 +38,8 @@ class Matcher():
         Returns:
 
         """
-        self.data_left = data_left.df.copy()
-        self.data_right = data_right.df.copy()
+        self.data_left = data_left
+        self.data_right = data_right
         self.join_features = mapping_features.join_features
         self.features_left = mapping_features.features_left
         self.features_right = mapping_features.features_right
@@ -53,7 +53,7 @@ class Matcher():
         cols = self.features_left.copy()
         cols.append('id_left')
         for feature in self.features_left:
-            dataframe_left = self.data_left[cols]
+            dataframe_left = self.data_left.df[cols]
             feature_dict = {}
             for row in dataframe_left.iterrows():
                 entity = row[1]
@@ -66,7 +66,7 @@ class Matcher():
         cols = self.features_right.copy()
         cols.append('id_right')
         for feature in self.features_right:
-            dataframe_right = self.data_right[cols]
+            dataframe_right = self.data_right.df[cols]
             feature_dict = {}
             for row in dataframe_right.iterrows():
                 entity = row[1]
@@ -83,11 +83,11 @@ class Matcher():
             self.records_join[list(self.join_features)[i]] = join_record
 
     def initiate_list_id_record_join(self):
-        self.id_records_join = list(self.data_left['id_left'])
-        self.id_records_join.extend(list(self.data_right['id_right']))
+        self.id_records_join = list(self.data_left.df['id_left'])
+        self.id_records_join.extend(list(self.data_right.df['id_right']))
 
     def get_count_entity(self):
-        return len(self.data_left) + len(self.data_right)
+        return len(self.data_left.df) + len(self.data_right.df)
 
     def match(self):
         self.data_preprocessor.id_preprocess()

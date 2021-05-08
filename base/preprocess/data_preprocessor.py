@@ -25,13 +25,13 @@ class DataPreprocessor:
         """
 
         if not self.matcher.id_left:
-            self.add_id(self.matcher.data_left, "left")
+            self.add_id(self.matcher.data_left.df, "left")
         else:
-            self.matcher.data_left['id_left'] = self.matcher.data_left[self.matcher.id_left]
+            self.matcher.data_left.df['id_left'] = self.matcher.data_left.df[self.matcher.id_left]
         if not self.matcher.id_right:
-            self.add_id(self.matcher.data_right, "right")
+            self.add_id(self.matcher.data_right.df, "right")
         else:
-            self.matcher.data_right['id_right'] = self.matcher.data_right[self.matcher.id_right]
+            self.matcher.data_right.df['id_right'] = self.matcher.data_right.df[self.matcher.id_right]
 
     @staticmethod
     def add_id(dataframe, side):
