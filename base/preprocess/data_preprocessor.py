@@ -25,16 +25,15 @@ class DataPreprocessor:
         """
 
         if not self.matcher.id_left:
-            self.add_id(self.matcher.data_left.df, "left")
+            self.add_id(self.matcher.left_data.df, "left")
         else:
-            self.matcher.data_left.df['id_left'] = self.matcher.data_left.df[self.matcher.id_left]
+            self.matcher.left_data.df['id_left'] = self.matcher.left_data.df[self.matcher.id_left]
         if not self.matcher.id_right:
-            self.add_id(self.matcher.data_right.df, "right")
+            self.add_id(self.matcher.right_data.df, "right")
         else:
-            self.matcher.data_right.df['id_right'] = self.matcher.data_right.df[self.matcher.id_right]
+            self.matcher.right_data.df['id_right'] = self.matcher.right_data.df[self.matcher.id_right]
 
-    @staticmethod
-    def add_id(dataframe, side):
+    def add_id(self, df, side):
         """
         Static method of DataPreprocessor to add new IDs into the dataset if it is not has IDs
 
@@ -46,5 +45,5 @@ class DataPreprocessor:
 
         """
         id_side = "id_" + side
-        id_list = ["{}_{}".format(i, side) for i in range(0, len(dataframe))]
-        dataframe[id_side] = id_list
+        id_list = ["{}_{}".format(i, side) for i in range(0, len(df))]
+        df[id_side] = id_list

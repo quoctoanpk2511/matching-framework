@@ -79,7 +79,7 @@
           <table class="table table-striped custom-table">
             <thead>
               <tr>
-			    {% for feature in matcher.data_left.df.columns: %}
+			    {% for feature in matcher.left_data.df.columns: %}
                   <th scope="col">
 				    {{ feature }}
 				  </th>
@@ -87,9 +87,9 @@
               </tr>
             </thead>
             <tbody>
-		      {% for entity in matcher.data_left.df[matcher.data_left.df.columns.values].iterrows(): %}
+		      {% for entity in matcher.left_data.df[matcher.left_data.df.columns.values].iterrows(): %}
                 <tr scope="row">
-			      {% for feature in matcher.data_left.df.columns: %}
+			      {% for feature in matcher.left_data.df.columns: %}
                     <td>
 				      {{ dict(entity[1])[feature] }}
                     </td>

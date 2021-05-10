@@ -9,8 +9,8 @@ app = Flask(__name__)
 def index():
     mappingfeatures = MappingFeature()
     mappingfeatures.join_features = {'product_title': 1}
-    mappingfeatures.features_left = ['product_title']
-    mappingfeatures.features_right = ['product_title']
+    mappingfeatures.left_features = ['product_title']
+    mappingfeatures.right_features = ['product_title']
     matcher = start_match(mappingfeatures)
     return render_template('index.html', matcher=matcher)
 

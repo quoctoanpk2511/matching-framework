@@ -14,6 +14,15 @@ class Cluster:
 
         """
 
+    def add_cluster(self):
+        cluster_left, cluster_right = self.split_list()
+        self.matcher.left_data.df['Cluster'] = cluster_left
+        self.matcher.right_data.df['Cluster'] = cluster_right
+
+    def split_list(self):
+        part = len(self.matcher.left_data.df['id_left'])
+        return self.clusters[:part], self.clusters[part:]
+
 from scipy.cluster.hierarchy import linkage, fcluster
 class HierarchicalClustering(Cluster):
 
@@ -23,17 +32,5 @@ class HierarchicalClustering(Cluster):
 
     def clustering(self):
         linkage_matrix = self.linking('complete', 'cosine')
-        clusters = fcluster(linkage_matrix, t=0.35, criterion='distance')
-        self.add_cluster(clusters)
-
-    def add_cluster(self, clusters):
-        cluster_left, cluster_right = self.split_list(clusters)
-        self.matcher.data_left.df['Cluster'] = cluster_left
-        self.matcher.data_right.df['Cluster'] = cluster_right
-
-    def split_list(self, clusters):
-        part = len(self.matcher.data_left.df['id_left'])
-        return clusters[:part], clusters[part:]
-
-
-
+        self.clusters = fcluster(linkage_matrix, t=0.35, criterion='distance')
+        self.add_cluster()

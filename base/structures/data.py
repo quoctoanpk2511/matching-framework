@@ -58,8 +58,8 @@ class MappingFeature:
         This dictionary represents the mapping of features from feature_left and feature_right.
         """
 
-        self.features_left = []
+        self.left_features = []
         """A list of dataset1's features is used for matching."""
 
-        self.features_right = []
+        self.right_features = []
         """A list of dataset2's features is used for matching."""

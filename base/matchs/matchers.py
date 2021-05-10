@@ -2,7 +2,7 @@ from base.preprocess.data_preprocessor import DataPreprocessor
 from base.structures.data import Dataset, MappingFeature
 from base.preprocess.tokenizers import Tokenizer
 from base.scores.vectorizers import Vectorizer
-from base.scores.similarities import Similarity
+from base.scores.similarities import SimilarityScorer
 from base.matchs.clusters import Cluster
 
 class Matcher():
@@ -11,7 +11,7 @@ class Matcher():
                  data_preprocessor = DataPreprocessor(),
                  tokenizer = Tokenizer(),
                  vectorizer = Vectorizer(),
-                 similarity = Similarity(),
+                 similarity = SimilarityScorer(),
                  cluster = Cluster(), ):
         self.data_preprocessor = data_preprocessor
         self.tokenizer = tokenizer
@@ -20,8 +20,8 @@ class Matcher():
         self.cluster = cluster
 
     def add_data(self,
-                 data_left: Dataset,
-                 data_right: Dataset,
+                 left_data: Dataset,
+                 right_data: Dataset,
                  mapping_features: MappingFeature,
                  id_left = None,
                  id_right = None):
@@ -29,8 +29,8 @@ class Matcher():
         Adding data to Matcher.
 
         Args:
-            data_left:
-            data_right:
+            left_data:
+            right_data:
             mapping_features:
             id_left:
             id_right:
@@ -38,11 +38,11 @@ class Matcher():
         Returns:
 
         """
-        self.data_left = data_left
-        self.data_right = data_right
+        self.left_data = left_data
+        self.right_data = right_data
         self.join_features = mapping_features.join_features
-        self.features_left = mapping_features.features_left
-        self.features_right = mapping_features.features_right
+        self.features_left = mapping_features.left_features
+        self.features_right = mapping_features.right_features
         self.id_left = id_left
         self.id_right = id_right
 
@@ -53,7 +53,7 @@ class Matcher():
         cols = self.features_left.copy()
         cols.append('id_left')
         for feature in self.features_left:
-            dataframe_left = self.data_left.df[cols]
+            dataframe_left = self.left_data.df[cols]
             feature_dict = {}
             for row in dataframe_left.iterrows():
                 entity = row[1]
@@ -66,7 +66,7 @@ class Matcher():
         cols = self.features_right.copy()
         cols.append('id_right')
         for feature in self.features_right:
-            dataframe_right = self.data_right.df[cols]
+            dataframe_right = self.right_data.df[cols]
             feature_dict = {}
             for row in dataframe_right.iterrows():
                 entity = row[1]
@@ -82,19 +82,19 @@ class Matcher():
             join_record.update(self.records_right[i])
             self.records_join[list(self.join_features)[i]] = join_record
 
-    def initiate_list_id_record_join(self):
-        self.id_records_join = list(self.data_left.df['id_left'])
-        self.id_records_join.extend(list(self.data_right.df['id_right']))
+    def get_list_id_record_join(self):
+        list_id_records_join = list(self.left_data.df['id_left'])
+        list_id_records_join.extend(list(self.right_data.df['id_right']))
+        return list_id_records_join
 
     def get_count_entity(self):
-        return len(self.data_left.df) + len(self.data_right.df)
+        return len(self.left_data.df) + len(self.right_data.df)
 
     def match(self):
         self.data_preprocessor.id_preprocess()
         self.initiate_match_record()
-        self.initiate_list_id_record_join()
         self.vectorizer.matcher(self)
         self.similarity.matcher(self)
-        self.similarity.score(self.vectorizer.vectorize(), self.join_features)
+        self.similarity.score()
         self.cluster.matcher(self)
         self.cluster.clustering()

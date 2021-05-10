@@ -2,7 +2,7 @@ import abc
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-class Similarity:
+class SimilarityScorer:
     """
     Abstract class for score similarity.
     """
@@ -11,32 +11,47 @@ class Similarity:
         self.matcher = matcher
 
     @abc.abstractmethod
+    def distance_score(self):
+        """
+
+        Returns: Dict
+
+        """
+
     def score(self):
         """
 
-        Returns:
+        Returns: None
 
         """
+        similarity_dict = self.distance_score()
+        self.merge_matrix_with_weight_of_features(similarity_dict)
 
-class Cosine_Similarity(Similarity):
-
-    def score(self, vector_dict, feature_weight_dict):
+    def merge_matrix_with_weight_of_features(self, similarity_dict):
         """
 
-        Returns:
+        Args:
+            similarity_dict: Dict
+
+        Returns: None
 
         """
-
-        similarity_dict = {}
-        for feature, term_matrix in vector_dict.items():
-            distance = cosine_similarity(term_matrix)
-            similarity_dict[feature] = distance
-        similarity_matrix = self.merge_matrix_with_weight_of_features(similarity_dict, feature_weight_dict)
-        self.matcher.similarity_matrix = similarity_matrix
-
-    def merge_matrix_with_weight_of_features(self, similarity_dict, feature_weight_dict):
         shape = self.matcher.get_count_entity()
         similarity_matrix = np.zeros((shape, shape))
         for feature, distance in similarity_dict.items():
-            similarity_matrix += similarity_dict[feature] * feature_weight_dict[feature]
-        return similarity_matrix
+            similarity_matrix += similarity_dict[feature] * self.matcher.join_features[feature]
+        self.matcher.similarity_matrix = similarity_matrix
+
+class Cosine_Similarity(SimilarityScorer):
+
+    def distance_score(self):
+        """
+
+        Returns: Dict
+
+        """
+        similarity_dict = {}
+        for feature, term_matrix in self.matcher.vectorizer.vectorize().items():
+            distance = cosine_similarity(term_matrix)
+            similarity_dict[feature] = distance
+        return similarity_dict

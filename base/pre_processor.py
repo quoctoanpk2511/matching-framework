@@ -173,8 +173,8 @@ dataset4 = mysql.read()
 
 mappingfeatures = MappingFeature()
 mappingfeatures.join_features = {'product_title':1}
-mappingfeatures.features_left = ['product_title']
-mappingfeatures.features_right = ['product_title']
+mappingfeatures.left_features = ['product_title']
+mappingfeatures.right_features = ['product_title']
 
 dmap = DataPreprocessor()
 t = DefaultTokenizer()
@@ -212,8 +212,8 @@ from fuzzymatcher.record import RecordToMatch, Record
 #     print(tfidf_vectorizer.get_feature_names())
 #     print(tfidf_matrix)
 # m.vectorizer.vectorize()
-print(m.data_left.df)
-print(m.data_right.df)
+print(m.left_data.df)
+print(m.right_data.df)
 
 # m.tokenizer = NLTK_TOKENIZER
 # m.tokenizer.matcher(m)

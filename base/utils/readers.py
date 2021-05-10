@@ -10,6 +10,7 @@ class Reader(ABC):
     Abstract class for reading data in dataset format.
     """
 
+    @abstractmethod
     def __init__(self):
         """
 
