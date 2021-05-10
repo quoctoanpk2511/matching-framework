@@ -1,4 +1,5 @@
 import abc
+import re
 from sklearn.feature_extraction.text import (
     CountVectorizer,
     TfidfVectorizer,
@@ -40,11 +41,17 @@ class Tf_IdfVectorizer(Vectorizer):
 
     def vectorize(self):
         vector_dict = {}
-        stopword = stopwords = ['black', 'white', 'grey', 'silver', 'unlocked', 'sim', 'free',
+        stopwords = ['black', 'white', 'grey', 'silver', 'unlocked', 'sim', 'free', 'water', 'dust', 'resistant', 'by',
                                 'gold', 'rose', 'space', 'handset', 'only', 'mobile phone', 'phone',
                                 'smartphone', 'in', 'mobile', 'single', 'cm', '4g', '4.7', '5.5', '5.8']
         for feature, records in self.matcher.records_join.items():
-            tfidf_vectorizer = TfidfVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1, 3), stop_words=stopword, tokenizer=self.matcher.tokenizer.tokenize)
-            tfidf_matrix = tfidf_vectorizer.fit_transform(list(records.values()))
+            tfidf_vectorizer = TfidfVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1, 3), stop_words=stopwords, tokenizer=self.matcher.tokenizer.tokenize)
+            tfidf_matrix = tfidf_vectorizer.fit_transform(self.nomalize_data(list(records.values())))
             vector_dict[feature] = tfidf_matrix
         return vector_dict
+
+    def nomalize_data(self, records):
+        list_record = []
+        for record in records:
+            list_record.append(re.sub('(?<=\d) (?=gb)', '', record))
+        return list_record

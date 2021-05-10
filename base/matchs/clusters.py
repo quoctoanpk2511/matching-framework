@@ -3,6 +3,9 @@ import abc
 
 class Cluster:
 
+    def __init__(self):
+        super().__init__()
+
     def matcher(self, matcher):
         self.matcher = matcher
 
@@ -26,11 +29,27 @@ class Cluster:
 from scipy.cluster.hierarchy import linkage, fcluster
 class HierarchicalClustering(Cluster):
 
-    def linking(self, method, metric):
-        linkage_matrix = linkage(self.matcher.similarity_matrix, method=method, metric=metric)
+    def __init__(self, method, metric):
+        super().__init__()
+        self.method = method
+        """single, centroid, complete, average"""
+        self.metric = metric
+        """‘cosine, euclidean, hamming, jaccard,..."""
+
+    def linking(self):
+        linkage_matrix = linkage(self.matcher.similarity_matrix, method=self.method, metric=self.metric)
         return linkage_matrix
 
     def clustering(self):
-        linkage_matrix = self.linking('complete', 'cosine')
+        linkage_matrix = self.linking()
         self.clusters = fcluster(linkage_matrix, t=0.35, criterion='distance')
+        self.add_cluster()
+
+from sklearn.cluster import KMeans
+class KMeansClustering(Cluster):
+
+    def clustering(self):
+        kmeans = KMeans(n_clusters=11)
+        kmeans.fit(self.matcher.similarity_matrix)
+        self.clusters = kmeans.labels_
         self.add_cluster()

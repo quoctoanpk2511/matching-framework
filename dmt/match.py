@@ -3,7 +3,7 @@ from base.preprocess.data_preprocessor import DataPreprocessor
 from base.preprocess.tokenizers import DefaultTokenizer, GenericTokenizer, NLTK_TOKENIZER
 from base.scores.vectorizers import Tf_IdfVectorizer
 from base.scores.similarities import Cosine_Similarity
-from base.matchs.clusters import HierarchicalClustering
+from base.matchs.clusters import HierarchicalClustering, KMeansClustering
 from base.matchs.matchers import Matcher
 import environ
 
@@ -13,14 +13,14 @@ environ.Env.read_env()
 def start_match(mapping_features,
                 id_left = None,
                 id_right = None):
-    query1 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 11"
+    query1 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND product_id % 2 = 1 AND cluster_id < 11"
     mysql = MySQLReader(env('DATABASE_HOST'),
                         env('DATABASE_USER'),
                         env('DATABASE_PASSWORD'),
                         env('DATABASE_NAME'),
                         query1)
     dataset1 = mysql.read()
-    query2 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND cluster_id < 5"
+    query2 = "SELECT * FROM `product-clustering`.product WHERE category_id = 2612 AND product_id % 2 = 0 AND cluster_id < 11"
     mysql = MySQLReader(env('DATABASE_HOST'),
                         env('DATABASE_USER'),
                         env('DATABASE_PASSWORD'),
@@ -32,7 +32,8 @@ def start_match(mapping_features,
     tokenizer = DefaultTokenizer()
     vectorizer = Tf_IdfVectorizer()
     similarity_scorer = Cosine_Similarity()
-    cluster = HierarchicalClustering()
+    cluster = HierarchicalClustering(method='complete', metric='cosine')
+    # cluster = KMeansClustering()
 
     m = Matcher(data_preprocessor=data_preprocessor,
                 tokenizer=tokenizer,
