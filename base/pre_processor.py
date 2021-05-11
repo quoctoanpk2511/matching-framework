@@ -180,7 +180,7 @@ dmap = DataPreprocessor()
 t = DefaultTokenizer()
 tfidf = Tf_IdfVectorizer()
 sim = Cosine_Similarity()
-cluster = HierarchicalClustering()
+cluster = HierarchicalClustering(threshold=0.35)
 
 m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf, similarity=sim, cluster=cluster)
 m.add_data(dataset3, dataset4, mappingfeatures)

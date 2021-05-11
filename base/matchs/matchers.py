@@ -46,8 +46,6 @@ class Matcher():
         self.id_left = id_left
         self.id_right = id_right
 
-        self.data_preprocessor.matcher(self)
-
     def initiate_match_record(self):
         self.records_left = []
         cols = self.features_left.copy()
@@ -91,6 +89,7 @@ class Matcher():
         return len(self.left_data.df) + len(self.right_data.df)
 
     def match(self):
+        self.data_preprocessor.matcher(self)
         self.data_preprocessor.id_preprocess()
         self.initiate_match_record()
         self.vectorizer.matcher(self)

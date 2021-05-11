@@ -40,8 +40,8 @@ def start_match():
     tokenizer = DefaultTokenizer()
     vectorizer = Tf_IdfVectorizer()
     similarity_scorer = Cosine_Similarity()
-    cluster = HierarchicalClustering(method='complete', metric='cosine')
-    # cluster = KMeansClustering()
+    cluster = HierarchicalClustering(threshold=0.35)
+    # cluster = KMeansClustering(n_clusters=11)
 
     m = Matcher(data_preprocessor=data_preprocessor,
                 tokenizer=tokenizer,
