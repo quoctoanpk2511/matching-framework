@@ -1,17 +1,12 @@
 from flask import Flask, render_template
 from dmt.match import start_match
-from base.structures.data import MappingFeature
 
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    mappingfeatures = MappingFeature()
-    mappingfeatures.join_features = {'product_title': 1}
-    mappingfeatures.left_features = ['product_title']
-    mappingfeatures.right_features = ['product_title']
-    matcher = start_match(mappingfeatures)
+    matcher = start_match()
     return render_template('index.html', matcher=matcher)
 
 @app.route('/about')

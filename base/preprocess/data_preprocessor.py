@@ -1,7 +1,14 @@
+import abc
+
+
 class DataPreprocessor:
     """
-    Class to process and standardize the IDs of the dataset.
+    Abstract class to process and standardize data of the dataset.
     """
+
+    def __init__(self,
+                 stopwords = []):
+        self.stopwords = stopwords
 
     def matcher(self, matcher):
         """
@@ -16,6 +23,14 @@ class DataPreprocessor:
         self.matcher = matcher
         """The matcher object"""
 
+    @abc.abstractmethod
+    def data_preprocess(self):
+        """
+
+        Returns: None
+
+        """
+
     def id_preprocess(self):
         """
         Method to process the IDs of two dataset.
@@ -23,7 +38,6 @@ class DataPreprocessor:
         Returns: None
 
         """
-
         if not self.matcher.id_left:
             self.add_id(self.matcher.left_data.df, "left")
         else:
@@ -47,3 +61,15 @@ class DataPreprocessor:
         id_side = "id_" + side
         id_list = ["{}_{}".format(i, side) for i in range(0, len(df))]
         df[id_side] = id_list
+
+
+class DefaultDataPreprocessor(DataPreprocessor):
+
+    def data_preprocess(self):
+        """
+
+        Returns:
+
+        """
+
+
