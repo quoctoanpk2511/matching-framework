@@ -81,7 +81,6 @@ from base.preprocess.tokenizers import GenericTokenizer, NLTK_TOKENIZER
 #     print(document.tokens)
 
 # test vectorizer chua xong
-from base.scores.vectorizers import FreqVectorizer
 # freq = FreqVectorizer()
 # freq.vectorize(test5)
 # for data in test5:
@@ -128,10 +127,11 @@ dataset2 = CSVReader('./data/students1.csv').read()
 #     print(data)
 
 from base.utils.readers import CSVReader, MySQLReader
-from base.scores.vectorizers import Tf_IdfVectorizer
+from base.scores.vectorizers import TFIDFVectorizer
 from base.preprocess.tokenizers import DefaultTokenizer, GenericTokenizer, NLTK_TOKENIZER
 from base.scores.similarities import Cosine_Similarity
 from base.matchs.clusters import HierarchicalClustering
+from base.preprocess.data_preprocessor import DefaultDataPreprocessor
 import pandas as pd
 
 #read from csv
@@ -171,19 +171,29 @@ dataset4 = mysql.read()
 # print(dataset3.shape)
 # print(dataset4.shape)
 
-mappingfeatures = MappingFeature()
-mappingfeatures.join_features = {'product_title':1}
-mappingfeatures.left_features = ['product_title']
-mappingfeatures.right_features = ['product_title']
+mapping_features = MappingFeature()
+mapping_features.join_features = {'product_title':1}
+mapping_features.left_features = ['product_title']
+mapping_features.right_features = ['product_title']
 
-dmap = DataPreprocessor()
-t = DefaultTokenizer()
-tfidf = Tf_IdfVectorizer()
-sim = Cosine_Similarity()
+stopwords = ['black', 'white', 'grey', 'silver', 'unlocked', 'sim', 'free', 'water', 'dust', 'resistant', 'by',
+                     'gold', 'rose', 'space', 'handset', 'only', 'mobile phone', 'phone',
+                     'smartphone', 'in', 'mobile', 'single', 'cm', '4g', '4.7', '5.5', '5.8']
+
+data_preprocessor = DefaultDataPreprocessor(stopwords=stopwords)
+tokenizer = DefaultTokenizer()
+# vectorizer = Tf_IdfVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
+vectorizer = TFIDFVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
+similarity_scorer = Cosine_Similarity()
 cluster = HierarchicalClustering(threshold=0.35)
+# cluster = KMeansClustering(n_clusters=11)
 
-m = Matcher(data_preprocessor=dmap, tokenizer=t, vectorizer=tfidf, similarity=sim, cluster=cluster)
-m.add_data(dataset3, dataset4, mappingfeatures)
+m = Matcher(data_preprocessor=data_preprocessor,
+            tokenizer=tokenizer,
+            vectorizer=vectorizer,
+            similarity=similarity_scorer,
+            cluster=cluster)
+m.add_data(dataset3, dataset3, mapping_features)
 m.match()
 
 # print(m.data_left)

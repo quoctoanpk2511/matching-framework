@@ -2,7 +2,7 @@ from base.structures.data import MappingFeature
 from base.utils.readers import CSVReader, MySQLReader
 from base.preprocess.data_preprocessor import DefaultDataPreprocessor
 from base.preprocess.tokenizers import DefaultTokenizer, GenericTokenizer, NLTK_TOKENIZER
-from base.scores.vectorizers import Tf_IdfVectorizer
+from base.scores.vectorizers import TFIDFVectorizer, COUNTVectorizer
 from base.scores.similarities import Cosine_Similarity
 from base.matchs.clusters import HierarchicalClustering, KMeansClustering
 from base.matchs.matchers import Matcher
@@ -38,7 +38,8 @@ def start_match():
 
     data_preprocessor = DefaultDataPreprocessor(stopwords=stopwords)
     tokenizer = DefaultTokenizer()
-    vectorizer = Tf_IdfVectorizer()
+    # vectorizer = TFIDFVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
+    vectorizer = COUNTVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
     similarity_scorer = Cosine_Similarity()
     cluster = HierarchicalClustering(threshold=0.35)
     # cluster = KMeansClustering(n_clusters=11)
