@@ -1,13 +1,11 @@
 import abc
+import re
 
 
 class Tokenizer():
     """
     Abstract class for splitting and tokenizing raw text.
     """
-
-    def __init__(self):
-        super().__init__()
 
     def matcher(self, matcher):
         """
@@ -23,7 +21,7 @@ class Tokenizer():
         """The matcher object"""
 
     @abc.abstractmethod
-    def tokenize_string(self, text):
+    def tokenize_record(self, text):
         """
         An abstract method to tokenize string.
 
@@ -51,6 +49,14 @@ class Tokenizer():
             dict_of_list_token[feature] = list_token
         return dict_of_list_token
 
+    @abc.abstractmethod
+    def nomalize_record(self):
+        """
+
+        Returns:
+
+        """
+
 
 class GenericTokenizer(Tokenizer):
     """
@@ -58,12 +64,10 @@ class GenericTokenizer(Tokenizer):
     """
 
     def __init__(self, splitter):
-
-        super().__init__()
         self.splitter = splitter
         """Splitter function"""
 
-    def tokenize_string(self, text):
+    def tokenize_record(self, text):
         """
         A function that takes a string as input and returns a list/iterator of tokenized string items
 
@@ -85,9 +89,19 @@ class DefaultTokenizer(Tokenizer):
     Class default for tokenizer
     """
 
-    def tokenize(self, text):
-        tokens = [word.lower() for word in text.split(' ')]
+    def tokenize_record(self, record):
+        tokens = [word.lower() for word in record.split(' ')]
         return tokens
+
+    def nomalize(self, records):
+        nomalized_records = []
+        for record in records:
+            nomalized_records.append(self.nomalize_record(record))
+        return nomalized_records
+
+    def nomalize_record(self, record):
+        nomalized_record = re.sub('(?<=\d) (?=gb)', '', record)
+        return nomalized_record
 
 from nltk import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
@@ -97,7 +111,6 @@ class StemTokenizer(Tokenizer):
     """
 
     def __init__(self, language):
-        super().__init__()
         self.language = language
         """Language used for stemmer"""
 

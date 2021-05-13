@@ -46,12 +46,6 @@ class Vectorizer:
             vectorized_dict[feature] = self.vecotrized_matrix(records)
         return vectorized_dict
 
-    def nomalize_data(self, records):
-        list_record = []
-        for record in records:
-            list_record.append(re.sub('(?<=\d) (?=gb)', '', record))
-        return list_record
-
 
 from sklearn.feature_extraction.text import CountVectorizer
 class COUNTVectorizer(Vectorizer):
@@ -61,8 +55,8 @@ class COUNTVectorizer(Vectorizer):
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,
                                            stop_words=self.matcher.data_preprocessor.stopwords,
-                                           tokenizer=self.matcher.tokenizer.tokenize)
-        return vectorizer.fit_transform(self.nomalize_data((list(records.values()))))
+                                           tokenizer=self.matcher.tokenizer.tokenize_record)
+        return vectorizer.fit_transform(self.matcher.tokenizer.nomalize((list(records.values()))))
 
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -73,5 +67,5 @@ class TFIDFVectorizer(Vectorizer):
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,
                                            stop_words=self.matcher.data_preprocessor.stopwords,
-                                           tokenizer=self.matcher.tokenizer.tokenize)
-        return vectorizer.fit_transform(self.nomalize_data((list(records.values()))))
+                                           tokenizer=self.matcher.tokenizer.tokenize_record)
+        return vectorizer.fit_transform(self.matcher.tokenizer.nomalize(list(records.values())))
