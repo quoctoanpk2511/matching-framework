@@ -1,4 +1,4 @@
-from base.structures.data import MappingFeature
+from base.structures.data import MappingFeature, Title
 from base.utils.readers import CSVReader, MySQLReader
 from base.preprocess.data_preprocessor import DefaultDataPreprocessor
 from base.preprocess.tokenizers import DefaultTokenizer, GenericTokenizer, NLTK_TOKENIZER
@@ -27,8 +27,10 @@ def start_match():
                         query2)
     dataset2 = mysql.read()
 
+    title = Title(value='product_title')
+
     mapping_features = MappingFeature()
-    mapping_features.join_features = {'product_title': 1}
+    mapping_features.join_features = {title: 1}
     mapping_features.left_features = ['product_title']
     mapping_features.right_features = ['product_title']
 
@@ -37,15 +39,15 @@ def start_match():
                      'smartphone', 'in', 'mobile', 'single', 'cm', '4g', '4.7', '5.5', '5.8']
 
     data_preprocessor = DefaultDataPreprocessor(stopwords=stopwords)
-    tokenizer = DefaultTokenizer()
-    # vectorizer = TFIDFVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
-    vectorizer = COUNTVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
+    # tokenizer = DefaultTokenizer()
+    vectorizer = TFIDFVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
+    # vectorizer = COUNTVectorizer(max_df=0.7, min_df=0.01, ngram_range=(1,3))
     similarity_scorer = Cosine_Similarity()
     cluster = HierarchicalClustering(threshold=0.35)
     # cluster = KMeansClustering(n_clusters=11)
 
     m = Matcher(data_preprocessor=data_preprocessor,
-                tokenizer=tokenizer,
+                # tokenizer=tokenizer,
                 vectorizer=vectorizer,
                 similarity=similarity_scorer,
                 cluster=cluster)

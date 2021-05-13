@@ -1,6 +1,5 @@
 from base.preprocess.data_preprocessor import DataPreprocessor
 from base.structures.data import Dataset, MappingFeature
-from base.preprocess.tokenizers import Tokenizer
 from base.scores.vectorizers import Vectorizer
 from base.scores.similarities import SimilarityScorer
 from base.matchs.clusters import Cluster
@@ -9,12 +8,10 @@ class Matcher():
 
     def __init__(self,
                  data_preprocessor = DataPreprocessor(),
-                 tokenizer = Tokenizer(),
                  vectorizer = Vectorizer(),
                  similarity = SimilarityScorer(),
                  cluster = Cluster(), ):
         self.data_preprocessor = data_preprocessor
-        self.tokenizer = tokenizer
         self.vectorizer = vectorizer
         self.similarity = similarity
         self.cluster = cluster

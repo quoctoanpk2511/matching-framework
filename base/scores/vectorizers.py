@@ -1,8 +1,4 @@
 import abc
-import re
-from base.structures.data import (
-    Dataset
-)
 
 
 class Vectorizer:
@@ -43,29 +39,29 @@ class Vectorizer:
         """
         vectorized_dict = {}
         for feature, records in self.matcher.records_join.items():
-            vectorized_dict[feature] = self.vecotrized_matrix(records)
+            vectorized_dict[feature] = self.vecotrized_matrix(feature, records)
         return vectorized_dict
 
 
 from sklearn.feature_extraction.text import CountVectorizer
 class COUNTVectorizer(Vectorizer):
 
-    def vecotrized_matrix(self, records):
+    def vecotrized_matrix(self, feature, records):
         vectorizer = CountVectorizer(max_df=self.max_df,
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,
                                            stop_words=self.matcher.data_preprocessor.stopwords,
-                                           tokenizer=self.matcher.tokenizer.tokenize_record)
-        return vectorizer.fit_transform(self.matcher.tokenizer.nomalize((list(records.values()))))
+                                           tokenizer=feature.tokenizer.tokenize_record)
+        return vectorizer.fit_transform(feature.tokenizer.normalize((list(records.values()))))
 
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 class TFIDFVectorizer(Vectorizer):
 
-    def vecotrized_matrix(self, records):
+    def vecotrized_matrix(self, feature, records):
         vectorizer = TfidfVectorizer(max_df=self.max_df,
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,
                                            stop_words=self.matcher.data_preprocessor.stopwords,
-                                           tokenizer=self.matcher.tokenizer.tokenize_record)
-        return vectorizer.fit_transform(self.matcher.tokenizer.nomalize(list(records.values())))
+                                           tokenizer=feature.tokenizer.tokenize_record)
+        return vectorizer.fit_transform(feature.tokenizer.normalize(list(records.values())))

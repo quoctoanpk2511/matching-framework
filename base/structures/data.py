@@ -1,4 +1,5 @@
 from pandas import DataFrame
+from base.preprocess.tokenizers import Tokenizer, TitleTokenizer, PriceTokenizer
 
 
 class Dataset():
@@ -63,3 +64,29 @@ class MappingFeature:
 
         self.right_features = []
         """A list of dataset2's features is used for matching."""
+
+class Feature:
+
+    def __init__(self,
+                 value,
+                 tokenizer = Tokenizer()):
+        """
+
+        """
+        self.value = value
+        self.tokenizer = tokenizer
+
+    def __hash__(self):
+        return hash((self.value))
+
+class Title(Feature):
+
+    def __init__(self, value):
+        super().__init__(value=value)
+        self.tokenizer = TitleTokenizer()
+
+class Price(Feature):
+
+    def __init__(self, value):
+        super().__init__(value=value)
+        self.tokenizer = PriceTokenizer()

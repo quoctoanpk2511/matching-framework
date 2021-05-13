@@ -50,12 +50,19 @@ class Tokenizer():
         return dict_of_list_token
 
     @abc.abstractmethod
-    def nomalize_record(self):
+    def normalize_record(self, record):
         """
 
         Returns:
 
         """
+        return record
+
+    def normalize(self, records):
+        nomalized_records = []
+        for record in records:
+            nomalized_records.append(self.normalize_record(record))
+        return nomalized_records
 
 
 class GenericTokenizer(Tokenizer):
@@ -93,15 +100,6 @@ class DefaultTokenizer(Tokenizer):
         tokens = [word.lower() for word in record.split(' ')]
         return tokens
 
-    def nomalize(self, records):
-        nomalized_records = []
-        for record in records:
-            nomalized_records.append(self.nomalize_record(record))
-        return nomalized_records
-
-    def nomalize_record(self, record):
-        nomalized_record = re.sub('(?<=\d) (?=gb)', '', record)
-        return nomalized_record
 
 from nltk import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
@@ -119,3 +117,21 @@ class StemTokenizer(Tokenizer):
         tokens = [word for word in word_tokenize(text)]
         stems = [stemmer.stem(t) for t in tokens]
         return stems
+
+class TitleTokenizer(DefaultTokenizer):
+    """
+    Tokenize product title.
+    """
+
+    def normalize_record(self, record):
+        nomalized_record = re.sub('(?<=\d) (?=gb)', '', record)
+        return nomalized_record
+
+class PriceTokenizer(Tokenizer):
+    """
+    Tokenize product price.
+    """
+
+    def normalize_record(self, record):
+        nomalized_record = re.sub('$đ￥', '', record)
+        return nomalized_record
