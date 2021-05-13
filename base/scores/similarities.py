@@ -47,7 +47,7 @@ class SimilarityScorer:
         shape = self.matcher.get_count_entity()
         similarity_matrix = np.zeros((shape, shape))
         for feature, distance in similarity_dict.items():
-            similarity_matrix += similarity_dict[feature] * self.matcher.join_features[feature]
+            similarity_matrix += similarity_dict[feature] * feature.weight
         return similarity_matrix
 
 

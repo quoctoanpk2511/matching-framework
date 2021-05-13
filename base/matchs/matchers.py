@@ -75,7 +75,7 @@ class Matcher():
             join_record = {}
             join_record.update(self.records_left[i])
             join_record.update(self.records_right[i])
-            self.records_join[list(self.join_features)[i]] = join_record
+            self.records_join[self.join_features[i]] = join_record
 
     def get_list_id_record_join(self):
         list_id_records_join = list(self.left_data.df['id_left'])

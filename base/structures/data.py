@@ -53,10 +53,10 @@ class MappingFeature:
             feature_left: List
             feature_right: List
         """
-        self.join_features = {}
+        self.join_features = []
         """
-        A dictionary stores the feature as the key and weight of the feature as value.
-        This dictionary represents the mapping of features from feature_left and feature_right.
+        A List stores the feature objects.
+        This represents the mapping of features from feature_left and feature_right.
         """
 
         self.left_features = []
@@ -67,26 +67,26 @@ class MappingFeature:
 
 class Feature:
 
-    def __init__(self,
-                 value,
+    def __init__(self, value, weight,
                  tokenizer = Tokenizer()):
         """
 
         """
         self.value = value
+        self.weight = weight
         self.tokenizer = tokenizer
 
     def __hash__(self):
-        return hash((self.value))
+        return hash((self.value, self.weight))
 
 class Title(Feature):
 
-    def __init__(self, value):
-        super().__init__(value=value)
+    def __init__(self, value, weight):
+        super().__init__(value=value, weight=weight)
         self.tokenizer = TitleTokenizer()
 
 class Price(Feature):
 
-    def __init__(self, value):
-        super().__init__(value=value)
+    def __init__(self, value, weight):
+        super().__init__(value=value, weight=weight)
         self.tokenizer = PriceTokenizer()

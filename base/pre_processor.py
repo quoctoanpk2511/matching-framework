@@ -39,10 +39,10 @@ mysql = MySQLReader(env('DATABASE_HOST'),
                     query2)
 dataset2 = mysql.read()
 
-title = Title(value='product_title')
+title = Title(value='product_title', weight=1)
 
 mapping_features = MappingFeature()
-mapping_features.join_features = {title:1}
+mapping_features.join_features = [title]
 mapping_features.left_features = ['product_title']
 mapping_features.right_features = ['product_title']
 
