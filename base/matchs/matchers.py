@@ -43,40 +43,6 @@ class Matcher():
         self.id_left = id_left
         self.id_right = id_right
 
-    def initiate_match_record(self):
-        self.records_left = []
-        cols = self.features_left.copy()
-        cols.append('id_left')
-        for feature in self.features_left:
-            dataframe_left = self.left_data.df[cols]
-            feature_dict = {}
-            for row in dataframe_left.iterrows():
-                entity = row[1]
-                entity_id = entity['id_left']
-                entity_dict = entity[feature]
-                feature_dict[entity_id] = entity_dict
-            self.records_left.append(feature_dict)
-
-        self.records_right = []
-        cols = self.features_right.copy()
-        cols.append('id_right')
-        for feature in self.features_right:
-            dataframe_right = self.right_data.df[cols]
-            feature_dict = {}
-            for row in dataframe_right.iterrows():
-                entity = row[1]
-                entity_id = entity['id_right']
-                entity_dict = entity[feature]
-                feature_dict[entity_id] = entity_dict
-            self.records_right.append(feature_dict)
-
-        self.records_join = {}
-        for i in range(0, len(self.join_features)):
-            join_record = {}
-            join_record.update(self.records_left[i])
-            join_record.update(self.records_right[i])
-            self.records_join[self.join_features[i]] = join_record
-
     def get_list_id_record_join(self):
         list_id_records_join = list(self.left_data.df['id_left'])
         list_id_records_join.extend(list(self.right_data.df['id_right']))
@@ -88,7 +54,7 @@ class Matcher():
     def match(self):
         self.data_preprocessor.matcher(self)
         self.data_preprocessor.id_preprocess()
-        self.initiate_match_record()
+        self.data_preprocessor.initiate_match_record()
         self.vectorizer.matcher(self)
         self.similarity.matcher(self)
         self.similarity.score()
