@@ -10,13 +10,10 @@ from base.scores.similarities import Cosine_Similarity
 from base.matchs.clusters import HierarchicalClustering
 from base.matchs.matchers import Matcher
 
-dataset1 = CSVReader('./data/students.csv').read()
-
-dataset2 = CSVReader('./data/students1.csv').read()
 
 #read from csv
-# dataset1 = pd.read_csv('./data/students.csv')
-# dataset2 = pd.read_csv('./data/students1.csv')
+# dataset1 = CSVReader('./data/left_students.csv').read()
+# dataset2 = CSVReader('./data/right_students.csv').read()
 
 #read from sql
 import environ

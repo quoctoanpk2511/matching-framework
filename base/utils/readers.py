@@ -1,16 +1,16 @@
-from abc import ABC, abstractmethod
+import abc
 import pandas as pd
 from base.structures.data import (
     Dataset,
 )
 
 
-class Reader(ABC):
+class Reader():
     """
     Abstract class for reading data in dataset format.
     """
 
-    @abstractmethod
+    @abc.abstractmethod
     def __init__(self):
         """
 
@@ -20,7 +20,7 @@ class Reader(ABC):
         super().__init__()
         self.dataset = Dataset()
 
-    @abstractmethod
+    @abc.abstractmethod
     def read(self):
         """
         Returns: Dataset
