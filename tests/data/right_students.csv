@@ -3,4 +3,4 @@ StdId,StdName,StdCourse,StdCity,StdSession
 2,John A B,Python,Tokyo,Evening
 3,Sam E F,Python,Paris,Morning
 4,David,Python,Hanoi,Morning
-5,Shaun G A,Java,Tokyo,Morning
+5,,Java,Tokyo,Morning

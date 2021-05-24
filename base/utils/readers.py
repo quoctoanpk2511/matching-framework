@@ -44,7 +44,7 @@ class CSVReader(Reader):
         """Name of csv file that contains a dataset"""
 
     def read(self):
-        self.dataset.df = pd.read_csv(self.csv_file, na_values='NaN', keep_default_na=False)
+        self.dataset.df = pd.read_csv(self.csv_file)
         return self.dataset
 
 
