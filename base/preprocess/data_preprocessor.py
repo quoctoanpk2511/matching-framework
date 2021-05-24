@@ -105,5 +105,5 @@ class DefaultDataPreprocessor(DataPreprocessor):
         Returns:
 
         """
-
-
+        self.id_preprocess()
+        self.initiate_match_record()

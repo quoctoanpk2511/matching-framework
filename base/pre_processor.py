@@ -61,7 +61,7 @@ m = Matcher(data_preprocessor=data_preprocessor,
             vectorizer=vectorizer,
             similarity=similarity_scorer,
             cluster=cluster)
-m.add_data(dataset1, dataset2, mapping_features)
+m.add_data(dataset1, dataset2, mapping_features, 'product_id', 'product_id')
 m.match()
 
 print(m.left_data.df)

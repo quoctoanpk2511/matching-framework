@@ -53,8 +53,7 @@ class Matcher():
 
     def match(self):
         self.data_preprocessor.matcher(self)
-        self.data_preprocessor.id_preprocess()
-        self.data_preprocessor.initiate_match_record()
+        self.data_preprocessor.data_preprocess()
         self.vectorizer.matcher(self)
         self.similarity.matcher(self)
         self.similarity.score()
