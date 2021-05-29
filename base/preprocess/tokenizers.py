@@ -7,7 +7,7 @@ class Tokenizer():
     Abstract class for splitting and tokenizing raw text.
     """
 
-    def matcher(self, matcher):
+    def add_matcher(self, matcher):
         """
         Add the match object on the Tokenizer.
 

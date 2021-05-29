@@ -6,7 +6,7 @@ class SimilarityScorer:
     Abstract class for compute the similarity of the entities.
     """
 
-    def matcher(self, matcher):
+    def add_matcher(self, matcher):
         self.matcher = matcher
 
     @abc.abstractmethod
@@ -28,7 +28,7 @@ class SimilarityScorer:
         Returns: None
         """
         similarity_dict = {}
-        for feature, vector_matrix in self.matcher.vectorizer.vectorize().items():
+        for feature, vector_matrix in self.matcher.vectorized_dict.items():
             similarity_dict[feature] = self.distance_score(vector_matrix)
         self.matcher.similarity_matrix = self.merge_matrix_with_weight_of_features(similarity_dict)
 

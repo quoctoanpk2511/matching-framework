@@ -51,11 +51,15 @@ class Matcher():
     def get_count_entity(self):
         return len(self.left_data.df) + len(self.right_data.df)
 
+    def add_matcher(self):
+        self.data_preprocessor.add_matcher(self)
+        self.vectorizer.add_matcher(self)
+        self.similarity.add_matcher(self)
+        self.cluster.add_matcher(self)
+
     def match(self):
-        self.data_preprocessor.matcher(self)
+        self.add_matcher()
         self.data_preprocessor.data_preprocess()
-        self.vectorizer.matcher(self)
-        self.similarity.matcher(self)
+        self.vectorizer.vectorize()
         self.similarity.score()
-        self.cluster.matcher(self)
         self.cluster.clustering()

@@ -29,7 +29,7 @@ class TestDefaultDataPreprocessor(unittest.TestCase):
 
         cls.matcher = Matcher(data_preprocessor=cls.data_preprocessor)
         cls.matcher.add_data(cls.dataset1, cls.dataset2, cls.mapping_features)
-        cls.matcher.data_preprocessor.matcher(cls.matcher)
+        cls.matcher.data_preprocessor.add_matcher(cls.matcher)
         cls.matcher.data_preprocessor.data_preprocess()
 
         # cls.data_preprocessor.matcher(cls.matcher)

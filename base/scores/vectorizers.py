@@ -6,15 +6,7 @@ class Vectorizer:
        Abstract class for convert a collection of raw documents to a matrix of TF-IDF features.
     """
 
-    def __init__(self,
-                 max_df=1,
-                 min_df=1,
-                 ngram_range=(1, 1)):
-        self.max_df = max_df
-        self.min_df = min_df
-        self.ngram_range = ngram_range
-
-    def matcher(self, matcher):
+    def add_matcher(self, matcher):
         self.matcher = matcher
 
     @abc.abstractmethod
@@ -40,28 +32,42 @@ class Vectorizer:
         vectorized_dict = {}
         for feature, records in self.matcher.records_join.items():
             vectorized_dict[feature] = self.vecotrized_matrix(feature, records)
-        return vectorized_dict
+        self.matcher.vectorized_dict = vectorized_dict
+
+
+class FrequencyVectorizer(Vectorizer):
+
+    def __init__(self,
+                 max_df=1,
+                 min_df=1,
+                 stop_words=[],
+                 ngram_range=(1, 1)):
+        self.max_df = max_df
+        self.min_df = min_df
+        self.stop_words = stop_words
+        self.ngram_range = ngram_range
+
 
 
 from sklearn.feature_extraction.text import CountVectorizer
-class COUNTVectorizer(Vectorizer):
+class COUNTVectorizer(FrequencyVectorizer):
 
     def vecotrized_matrix(self, feature, records):
         vectorizer = CountVectorizer(max_df=self.max_df,
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,
-                                           stop_words=self.matcher.data_preprocessor.stopwords,
+                                           stop_words=self.stop_words,
                                            tokenizer=feature.tokenizer.tokenize_record)
         return vectorizer.fit_transform(feature.tokenizer.normalize((list(records.values()))))
 
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-class TFIDFVectorizer(Vectorizer):
+class TFIDFVectorizer(FrequencyVectorizer):
 
     def vecotrized_matrix(self, feature, records):
         vectorizer = TfidfVectorizer(max_df=self.max_df,
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,
-                                           stop_words=self.matcher.data_preprocessor.stopwords,
+                                           stop_words=self.stop_words,
                                            tokenizer=feature.tokenizer.tokenize_record)
         return vectorizer.fit_transform(feature.tokenizer.normalize(list(records.values())))

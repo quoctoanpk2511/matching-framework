@@ -8,11 +8,7 @@ class DataPreprocessor:
     Abstract class to process and standardize data of the dataset.
     """
 
-    def __init__(self,
-                 stopwords = []):
-        self.stopwords = stopwords
-
-    def matcher(self, matcher):
+    def add_matcher(self, matcher):
         """
         Add the match object on the Dataprocess.
 
