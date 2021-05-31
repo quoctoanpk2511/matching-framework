@@ -1,5 +1,4 @@
 import abc
-import re
 
 
 class Tokenizer():
@@ -117,21 +116,3 @@ class StemTokenizer(Tokenizer):
         tokens = [word for word in word_tokenize(text)]
         stems = [stemmer.stem(t) for t in tokens]
         return stems
-
-class TitleTokenizer(DefaultTokenizer):
-    """
-    Tokenize product title.
-    """
-
-    def normalize_record(self, record):
-        nomalized_record = re.sub('(?<=\d) (?=gb)', '', record)
-        return nomalized_record
-
-class PriceTokenizer(Tokenizer):
-    """
-    Tokenize product price.
-    """
-
-    def normalize_record(self, record):
-        nomalized_record = re.sub('$đ￥', '', record)
-        return nomalized_record

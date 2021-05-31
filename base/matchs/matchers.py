@@ -2,7 +2,7 @@ from base.preprocess.data_preprocessor import DataPreprocessor
 from base.structures.data import Dataset, MappingFeature
 from base.scores.vectorizers import Vectorizer
 from base.scores.similarities import SimilarityScorer
-from base.matchs.clusters import Cluster
+from base.scores.clusters import Cluster
 
 class Matcher():
 

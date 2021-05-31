@@ -1,10 +1,9 @@
 from base.structures.data import MappingFeature, Title
-from base.utils.readers import CSVReader, MySQLReader
+from base.utils.readers import MySQLReader
 from base.preprocess.data_preprocessor import DefaultDataPreprocessor
-from base.preprocess.tokenizers import DefaultTokenizer, GenericTokenizer, NLTK_TOKENIZER
-from base.scores.vectorizers import TFIDFVectorizer, COUNTVectorizer
+from base.scores.vectorizers import TFIDFVectorizer
 from base.scores.similarities import Cosine_Similarity
-from base.matchs.clusters import HierarchicalClustering, KMeansClustering
+from base.scores.clusters import HierarchicalClustering
 from base.matchs.matchers import Matcher
 import environ
 

@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from base.preprocess.tokenizers import Tokenizer, TitleTokenizer, PriceTokenizer
+from base.preprocess.tokenizers import Tokenizer
 
 
 class Dataset():
@@ -78,15 +78,3 @@ class Feature:
 
     def __hash__(self):
         return hash((self.value, self.weight))
-
-class Title(Feature):
-
-    def __init__(self, value, weight):
-        super().__init__(value=value, weight=weight)
-        self.tokenizer = TitleTokenizer()
-
-class Price(Feature):
-
-    def __init__(self, value, weight):
-        super().__init__(value=value, weight=weight)
-        self.tokenizer = PriceTokenizer()
