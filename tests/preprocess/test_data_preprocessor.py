@@ -2,7 +2,7 @@ import unittest
 from base.structures.data import Feature, MappingFeature
 from base.utils.readers import CSVReader
 from base.preprocess.data_preprocessor import DefaultDataPreprocessor
-from base.matchs.matchers import Matcher
+from base.match.matcher import Matcher
 
 import environ
 env = environ.Env()

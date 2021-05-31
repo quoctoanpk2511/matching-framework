@@ -4,7 +4,7 @@ from base.preprocess.data_preprocessor import DefaultDataPreprocessor
 from base.scores.vectorizers import TFIDFVectorizer
 from base.scores.similarities import Cosine_Similarity
 from base.scores.clusters import HierarchicalClustering
-from base.matchs.matchers import Matcher
+from base.match.matcher import Matcher
 import environ
 
 env = environ.Env()

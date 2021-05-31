@@ -11,7 +11,7 @@ class Tokenizer():
         Add the match object on the Tokenizer.
 
         Args:
-            matcher: base.matchs.matchers.Matcher
+            matcher: base.match.matchers.Matcher
 
         Returns: None
 
