@@ -60,21 +60,21 @@ class MappingFeature:
         """
 
         self.left_features = []
-        """A list of dataset1's features is used for matching."""
+        """A list of left dataset features is used for matching."""
 
         self.right_features = []
-        """A list of dataset2's features is used for matching."""
+        """A list of right dataset features is used for matching."""
 
 class Feature:
 
-    def __init__(self, value, weight,
+    def __init__(self, field_name, weight,
                  tokenizer = Tokenizer()):
         """
 
         """
-        self.value = value
+        self.field_name = field_name
         self.weight = weight
         self.tokenizer = tokenizer
 
     def __hash__(self):
-        return hash((self.value, self.weight))
+        return hash((self.field_name, self.weight))

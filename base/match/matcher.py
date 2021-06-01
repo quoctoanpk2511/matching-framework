@@ -51,6 +51,20 @@ class Matcher():
     def get_count_entity(self):
         return len(self.left_data.df) + len(self.right_data.df)
 
+    def get_records_by_fields(self, dataset: Dataset, features: list, id_side):
+        fields = features.copy()
+        fields.append(id_side)
+        list_records = []
+        for field in fields:
+            records = {}
+            for row in dataset.df[fields].iterrows():
+                row_data = row[1]
+                record_id = row_data[id_side]
+                record = row_data[field]
+                records[record_id] = record
+            list_records.append(records)
+        return list_records
+
     def save_results(self):
         self.results = Dataset()
         self.results.df['id'] = self.get_list_id_record_join()
