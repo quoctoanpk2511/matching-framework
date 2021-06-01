@@ -36,14 +36,8 @@ class DataPreprocessor:
         Returns: None
 
         """
-        if not self.matcher.id_left:
-            self.add_id(self.matcher.left_data.df, "left")
-        else:
-            self.matcher.left_data.df['id_left'] = self.matcher.left_data.df[self.matcher.id_left]
-        if not self.matcher.id_right:
-            self.add_id(self.matcher.right_data.df, "right")
-        else:
-            self.matcher.right_data.df['id_right'] = self.matcher.right_data.df[self.matcher.id_right]
+        self.add_id(self.matcher.left_data.df, "left")
+        self.add_id(self.matcher.right_data.df, "right")
 
     def add_id(self, df, side):
         """

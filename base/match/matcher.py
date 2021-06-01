@@ -19,9 +19,7 @@ class Matcher():
     def add_data(self,
                  left_data: Dataset,
                  right_data: Dataset,
-                 mapping_features: MappingFeature,
-                 id_left = None,
-                 id_right = None):
+                 mapping_features: MappingFeature):
         """
         Adding data to Matcher.
 
@@ -40,8 +38,6 @@ class Matcher():
         self.join_features = mapping_features.join_features
         self.features_left = mapping_features.left_features
         self.features_right = mapping_features.right_features
-        self.id_left = id_left
-        self.id_right = id_right
 
     def get_list_id_record_join(self):
         list_id_records_join = list(self.left_data.df['id_left'])
