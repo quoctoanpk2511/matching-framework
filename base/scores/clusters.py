@@ -21,7 +21,7 @@ class Cluster:
 
     def split_list_records(self):
         part = len(self.matcher.left_data.df['id_left'])
-        return self.clusters[:part], self.clusters[part:]
+        return self.matcher.clusters[:part], self.matcher.clusters[part:]
 
 from scipy.cluster.hierarchy import linkage, fcluster
 class HierarchicalClustering(Cluster):
@@ -41,7 +41,7 @@ class HierarchicalClustering(Cluster):
 
     def clustering(self):
         linkage_matrix = linkage(self.matcher.similarity_matrix, method=self.method, metric=self.metric)
-        self.clusters = fcluster(linkage_matrix, t=self.thresold, criterion=self.criterion)
+        self.matcher.clusters = fcluster(linkage_matrix, t=self.thresold, criterion=self.criterion)
         self.add_cluster()
 
 from sklearn.cluster import KMeans
@@ -53,5 +53,5 @@ class KMeansClustering(Cluster):
     def clustering(self):
         kmeans = KMeans(n_clusters=self.n_clusters)
         kmeans.fit(self.matcher.similarity_matrix)
-        self.clusters = kmeans.labels_
+        self.matcher.clusters = kmeans.labels_
         self.add_cluster()

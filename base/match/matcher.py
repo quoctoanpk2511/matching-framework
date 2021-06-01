@@ -69,8 +69,8 @@ class Matcher():
         self.results = Dataset()
         self.results.df['id'] = self.get_list_id_record_join()
         for feature, records in self.records_join.items():
-            self.results.df[feature.value] = list(records.values())
-        self.results.df['cluster'] = self.cluster.clusters
+            self.results.df[feature.field_name] = list(records.values())
+        self.results.df['cluster'] = self.clusters
         self.results.df = self.results.df.sort_values(by=['cluster'], ascending=True)
 
     def add_matcher(self):
