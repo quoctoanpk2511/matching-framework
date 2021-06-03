@@ -3,14 +3,24 @@ import abc
 
 class Vectorizer:
     """
-       Abstract class for convert a collection of raw documents to a matrix of TF-IDF features.
+       Abstract class for convert a collection of record's data to a matrix of features.
     """
 
     def add_matcher(self, matcher):
+        """
+                Add the match object on the Vectorizer.
+
+                Args:
+                    matcher: base.match.matchers.Matcher
+
+                Returns: None
+
+                """
         self.matcher = matcher
+        """The matcher object"""
 
     @abc.abstractmethod
-    def vectorized_matrix(self):
+    def vectorize_matrix(self, feature, records):
         """
         Convert list of data to a matrix of features.
 
@@ -22,7 +32,7 @@ class Vectorizer:
 
     def vectorize(self):
         """
-        Get each data by for loop and call vectorized_matrix()
+        Get each data by for loop and call method vectorized_matrix()
 
         Returns:
         -------
@@ -31,7 +41,7 @@ class Vectorizer:
         """
         vectorized_dict = {}
         for feature, records in self.matcher.records_join.items():
-            vectorized_dict[feature] = self.vecotrized_matrix(feature, records)
+            vectorized_dict[feature] = self.vectorize_matrix(feature, records)
         self.matcher.vectorized_dict = vectorized_dict
 
 
@@ -52,7 +62,7 @@ class FrequencyVectorizer(Vectorizer):
 from sklearn.feature_extraction.text import CountVectorizer
 class COUNTVectorizer(FrequencyVectorizer):
 
-    def vecotrized_matrix(self, feature, records):
+    def vectorize_matrix(self, feature, records):
         vectorizer = CountVectorizer(max_df=self.max_df,
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,
@@ -64,7 +74,7 @@ class COUNTVectorizer(FrequencyVectorizer):
 from sklearn.feature_extraction.text import TfidfVectorizer
 class TFIDFVectorizer(FrequencyVectorizer):
 
-    def vecotrized_matrix(self, feature, records):
+    def vectorize_matrix(self, feature, records):
         vectorizer = TfidfVectorizer(max_df=self.max_df,
                                            min_df=self.min_df,
                                            ngram_range=self.ngram_range,

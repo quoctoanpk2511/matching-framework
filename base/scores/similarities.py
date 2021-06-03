@@ -7,10 +7,20 @@ class SimilarityScorer:
     """
 
     def add_matcher(self, matcher):
+        """
+                Add the match object on the SimilarityScorer.
+
+                Args:
+                    matcher: base.match.matchers.Matcher
+
+                Returns: None
+
+                """
         self.matcher = matcher
+        """The matcher object"""
 
     @abc.abstractmethod
-    def distance_score(self):
+    def similarity_score(self, vector_matrix):
         """
         Compute similarity.
 
@@ -22,19 +32,17 @@ class SimilarityScorer:
 
     def score(self):
         """
-        Get each data by for loop and call distance_score(),
-        save results to matcher after calling merge_matrix_with_weight_of_features().
-
-        Returns: None
+        Get each vectorized matrix by for loop and calling similarity_score().
+        Normalize matrixes by calling normalize_matrixes().
         """
         similarity_dict = {}
         for feature, vector_matrix in self.matcher.vectorized_dict.items():
-            similarity_dict[feature] = self.distance_score(vector_matrix)
-        self.matcher.similarity_matrix = self.merge_matrix_with_weight_of_features(similarity_dict)
+            similarity_dict[feature] = self.similarity_score(vector_matrix)
+        self.matcher.similarity_matrix = self.normalize_matrixes(similarity_dict)
 
-    def merge_matrix_with_weight_of_features(self, similarity_dict):
+    def normalize_matrixes(self, similarity_dict):
         """
-        Merge matrix into one with its weight.
+        Normalize similarity matrixes into one with it's weight.
 
         Args:
             similarity_dict: dict
@@ -42,7 +50,7 @@ class SimilarityScorer:
         Returns:
         -------
         similarity_matrix: array
-            Similarity matrix of entities.
+            Similarity matrix of records.
         """
         shape = self.matcher.get_count_entity()
         similarity_matrix = np.zeros((shape, shape))
@@ -54,7 +62,7 @@ class SimilarityScorer:
 from sklearn.metrics.pairwise import cosine_similarity
 class Cosine_Similarity(SimilarityScorer):
 
-    def distance_score(self, vector_matrix):
+    def similarity_score(self, vector_matrix):
         """
         Compute cosine similarity.
         """

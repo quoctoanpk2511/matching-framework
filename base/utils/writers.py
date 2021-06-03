@@ -21,9 +21,8 @@ class Writer():
     @abc.abstractmethod
     def write(self):
         """
-        Returns: Dataset
+        Method to write data
         """
-        return
 
 class CSVWriter(Writer):
     """

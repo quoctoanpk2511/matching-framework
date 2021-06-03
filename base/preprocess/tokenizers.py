@@ -20,12 +20,9 @@ class Tokenizer():
         """The matcher object"""
 
     @abc.abstractmethod
-    def tokenize_record(self, text):
+    def tokenize_record(self, record):
         """
-        An abstract method to tokenize string.
-
-        Args:
-            string: String
+        An abstract method to tokenize record's data.
 
         Returns: List
 
@@ -34,7 +31,7 @@ class Tokenizer():
 
     def tokenize(self):
         """
-        Method to tokenize all feature of dataset by calling tokenize_string() function.
+        Get each data by for loop and call method tokenize_record().
         Returns a dictionary with feature as key and list tokens as value.
 
         Returns: Dict
@@ -51,13 +48,17 @@ class Tokenizer():
     @abc.abstractmethod
     def normalize_record(self, record):
         """
-
-        Returns:
-
+        An abstract method to normalize record's data.
         """
         return record
 
     def normalize(self, records):
+        """
+        Get each data by for loop and call method normalize_record()
+
+        Returns: List
+
+        """
         nomalized_records = []
         for record in records:
             nomalized_records.append(self.normalize_record(record))
@@ -73,17 +74,17 @@ class GenericTokenizer(Tokenizer):
         self.splitter = splitter
         """Splitter function"""
 
-    def tokenize_record(self, text):
+    def tokenize_record(self, record):
         """
         A function that takes a string as input and returns a list/iterator of tokenized string items
 
         Args:
-            text: String
+            record: String
 
         Returns: List
 
         """
-        return self.splitter(text)
+        return self.splitter(record)
 
 
 from nltk import word_tokenize

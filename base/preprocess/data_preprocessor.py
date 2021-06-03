@@ -24,9 +24,7 @@ class DataPreprocessor:
     @abc.abstractmethod
     def data_preprocess(self):
         """
-
-        Returns: None
-
+        Do data preprocessing.
         """
 
     def id_preprocess(self):
@@ -55,6 +53,9 @@ class DataPreprocessor:
         df[id_side] = id_list
 
     def initiate_match_record(self):
+        """
+        Initialize the list of records according to the feature is used for matching
+        """
         list_records_left = self.matcher.get_records_by_fields(self.matcher.left_data, self.matcher.features_left, 'id_left')
         list_records_right = self.matcher.get_records_by_fields(self.matcher.right_data, self.matcher.features_right, 'id_right')
         self.matcher.records_join = {}
@@ -72,11 +73,6 @@ class DataPreprocessor:
 class DefaultDataPreprocessor(DataPreprocessor):
 
     def data_preprocess(self):
-        """
-
-        Returns:
-
-        """
         self.drop_record_with_none_value_in_feature()
         self.id_preprocess()
         self.initiate_match_record()

@@ -2,7 +2,7 @@ from base.preprocess.data_preprocessor import DataPreprocessor
 from base.structures.data import Dataset, MappingFeature
 from base.scores.vectorizers import Vectorizer
 from base.scores.similarities import SimilarityScorer
-from base.scores.clusters import Cluster
+from base.scores.clusters import Clustering
 
 class Matcher():
 
@@ -10,34 +10,65 @@ class Matcher():
                  data_preprocessor = DataPreprocessor(),
                  vectorizer = Vectorizer(),
                  similarity = SimilarityScorer(),
-                 cluster = Cluster(), ):
+                 cluster = Clustering(),):
+        """
+
+        Args:
+            data_preprocessor: DataPreprocessor
+            vectorizer: Vectorizer
+            similarity: SimilarityScorer
+            cluster: Clustering
+        """
         self.data_preprocessor = data_preprocessor
         self.vectorizer = vectorizer
         self.similarity = similarity
         self.cluster = cluster
 
-    def add_data(self,
-                 left_data: Dataset,
-                 right_data: Dataset,
-                 mapping_features: MappingFeature):
+    def add_data(self, left_data, right_data, mapping_features):
         """
         Adding data to Matcher.
 
         Args:
-            left_data:
-            right_data:
-            mapping_features:
-            id_left:
-            id_right:
-
-        Returns:
-
+            left_data: Dataset
+            right_data: Dataset
+            mapping_features: MappingFeature
         """
         self.left_data = left_data
         self.right_data = right_data
         self.join_features = mapping_features.join_features
         self.features_left = mapping_features.left_features
         self.features_right = mapping_features.right_features
+
+    def add_matcher(self):
+        """
+        Adding matcher object to handler classes.
+        """
+        self.data_preprocessor.add_matcher(self)
+        self.vectorizer.add_matcher(self)
+        self.similarity.add_matcher(self)
+        self.cluster.add_matcher(self)
+
+    def match(self):
+        """
+        Control the matching process.
+        """
+        self.add_matcher()
+        self.data_preprocessor.data_preprocess()
+        self.vectorizer.vectorize()
+        self.similarity.score()
+        self.cluster.analyze()
+        self.save_result()
+
+    def save_result(self):
+        """
+        Save result to matcher object.
+        """
+        self.results = Dataset()
+        self.results.df['id'] = self.get_list_id_record_join()
+        for feature, records in self.records_join.items():
+            self.results.df[feature.field_name] = list(records.values())
+        self.results.df['cluster'] = self.clusters
+        self.results.df = self.results.df.sort_values(by=['cluster'], ascending=True)
 
     def get_list_id_record_join(self):
         list_id_records_join = list(self.left_data.df['id_left'])
@@ -60,25 +91,3 @@ class Matcher():
                 records[record_id] = record
             list_records.append(records)
         return list_records
-
-    def save_results(self):
-        self.results = Dataset()
-        self.results.df['id'] = self.get_list_id_record_join()
-        for feature, records in self.records_join.items():
-            self.results.df[feature.field_name] = list(records.values())
-        self.results.df['cluster'] = self.clusters
-        self.results.df = self.results.df.sort_values(by=['cluster'], ascending=True)
-
-    def add_matcher(self):
-        self.data_preprocessor.add_matcher(self)
-        self.vectorizer.add_matcher(self)
-        self.similarity.add_matcher(self)
-        self.cluster.add_matcher(self)
-
-    def match(self):
-        self.add_matcher()
-        self.data_preprocessor.data_preprocess()
-        self.vectorizer.vectorize()
-        self.similarity.score()
-        self.cluster.clustering()
-        self.save_results()

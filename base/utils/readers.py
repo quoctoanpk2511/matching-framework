@@ -17,7 +17,6 @@ class Reader():
         Args:
             dataset: Dataset
         """
-        super().__init__()
         self.dataset = Dataset()
 
     @abc.abstractmethod
@@ -25,7 +24,6 @@ class Reader():
         """
         Returns: Dataset
         """
-        return
 
 
 class CSVReader(Reader):
