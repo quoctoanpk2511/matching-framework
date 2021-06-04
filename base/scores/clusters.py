@@ -31,5 +31,8 @@ class Clustering:
         self.matcher.right_data.df['match_cluster_id'] = cluster_right
 
     def split_list_records(self):
+        """
+        Get the split point.
+        """
         part = len(self.matcher.left_data.df['id_left'])
         return self.matcher.clusters[:part], self.matcher.clusters[part:]

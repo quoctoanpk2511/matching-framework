@@ -65,6 +65,7 @@ class MappingFeature:
         self.right_features = []
         """A list of right dataset features is used for matching."""
 
+
 class Feature:
 
     def __init__(self, field_name, weight,

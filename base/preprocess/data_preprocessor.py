@@ -69,5 +69,8 @@ class DataPreprocessor:
             self.matcher.records_join[self.matcher.join_features[i]] = join_record
 
     def drop_record_with_none_value_in_feature(self):
+        """
+        remove records with None feature
+        """
         self.matcher.left_data.df = self.matcher.left_data.df.dropna(subset=self.matcher.features_left)
         self.matcher.right_data.df = self.matcher.right_data.df.dropna(subset=self.matcher.features_right)

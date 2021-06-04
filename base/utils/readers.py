@@ -37,7 +37,7 @@ class Reader():
 
 class FileReader(Reader):
     """
-    Class reader for read data from csv file.
+    Class reader for read data from file.
     """
 
     def __init__(self, file_name):
@@ -51,10 +51,9 @@ class FileReader(Reader):
         """Name of file that contains a dataset"""
 
 
-import MySQLdb
 class DBReader(Reader):
     """
-    Class reader for read data from MySQL database.
+    Class reader for read data from database.
     """
 
     def __init__(self, db_host, db_user, db_passwd, db_name, sql):

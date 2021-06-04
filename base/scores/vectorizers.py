@@ -52,7 +52,19 @@ class FrequencyVectorizer(Vectorizer):
                  min_df=1,
                  stop_words=[],
                  ngram_range=(1, 1)):
+        """
+
+        Args:
+            max_df: float or int
+            min_df: Float or int
+            stop_words: list
+            ngram_range: array
+        """
         self.max_df = max_df
+        """ignore terms in vocabulary that have frequency or proportion higher than max_df"""
         self.min_df = min_df
+        """ignore terms in vocabulary that have frequency or proportion lower than min_df"""
         self.stop_words = stop_words
+        """terms that were ignored"""
         self.ngram_range = ngram_range
+        """the lower and upper boundary of n-grams"""

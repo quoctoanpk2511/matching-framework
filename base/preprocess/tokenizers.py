@@ -67,7 +67,7 @@ class Tokenizer():
 
 class GenericTokenizer(Tokenizer):
     """
-    A generic tokenizer.
+    A generic tokenizer use by calling function.
     """
 
     def __init__(self, splitter):

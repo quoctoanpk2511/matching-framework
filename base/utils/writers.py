@@ -1,8 +1,8 @@
 import abc
-import sqlalchemy
 from base.structures.data import (
     Dataset,
 )
+
 
 class Writer():
     """
@@ -24,9 +24,10 @@ class Writer():
         Method to write data
         """
 
+
 class FileWriter(Writer):
     """
-    Class writer for write dataset to csv file.
+    Class writer for write dataset to file.
     """
 
     def __init__(self, file_name, dataset):
@@ -42,7 +43,7 @@ class FileWriter(Writer):
 
 class DBWriter(Writer):
     """
-        Class writer for write dataset to MySQL database.
+        Class writer for write dataset to database.
     """
 
     def __init__(self, db_host, db_user, db_passwd, db_name, dataset):
@@ -67,10 +68,9 @@ class DBWriter(Writer):
     @abc.abstractmethod
     def connect(self):
         """
-        Method for create an engine to connect to the MySQL database.
+        Method for create an engine to connect to the database.
         """
-        self.con = sqlalchemy.create_engine("mysql://{user}:{pw}@{host}/{db}"
-				.format(host=self.db_host, db=self.db_name, user=self.db_user, pw=self.db_passwd))
+        return
 
     @abc.abstractmethod
     def write(self, table_name):

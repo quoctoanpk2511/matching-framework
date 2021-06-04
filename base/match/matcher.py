@@ -71,14 +71,25 @@ class Matcher():
         self.results.df = self.results.df.sort_values(by=['cluster'], ascending=True)
 
     def get_list_id_record_join(self):
+        """
+        Get list ID is created.
+        Returns:
+
+        """
         list_id_records_join = list(self.left_data.df['id_left'])
         list_id_records_join.extend(list(self.right_data.df['id_right']))
         return list_id_records_join
 
-    def get_count_entity(self):
+    def get_count_records(self):
+        """
+        Get number of records
+        """
         return len(self.left_data.df) + len(self.right_data.df)
 
     def get_records_by_fields(self, dataset: Dataset, features: list, id_side):
+        """
+        Get fields and field's records.
+        """
         fields = features.copy()
         fields.append(id_side)
         list_records = []

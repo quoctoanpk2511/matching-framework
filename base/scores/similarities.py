@@ -1,6 +1,7 @@
 import abc
 import numpy as np
 
+
 class SimilarityScorer:
     """
     Abstract class for compute the similarity of the entities.
@@ -52,7 +53,7 @@ class SimilarityScorer:
         similarity_matrix: array
             Similarity matrix of records.
         """
-        shape = self.matcher.get_count_entity()
+        shape = self.matcher.get_count_records()
         similarity_matrix = np.zeros((shape, shape))
         for feature, distance in similarity_dict.items():
             similarity_matrix += similarity_dict[feature] * feature.weight
