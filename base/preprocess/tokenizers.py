@@ -85,35 +85,3 @@ class GenericTokenizer(Tokenizer):
 
         """
         return self.splitter(record)
-
-
-from nltk import word_tokenize
-NLTK_TOKENIZER = GenericTokenizer(word_tokenize)
-
-
-class DefaultTokenizer(Tokenizer):
-    """
-    Class default for tokenizer
-    """
-
-    def tokenize_record(self, record):
-        tokens = [word.lower() for word in record.split(' ')]
-        return tokens
-
-
-from nltk import word_tokenize
-from nltk.stem.snowball import SnowballStemmer
-class StemTokenizer(Tokenizer):
-    """
-    A class for tokenizer and stemmer.
-    """
-
-    def __init__(self, language):
-        self.language = language
-        """Language used for stemmer"""
-
-    def tokenize_string(self, text):
-        stemmer = SnowballStemmer(language=self.language)
-        tokens = [word for word in word_tokenize(text)]
-        stems = [stemmer.stem(t) for t in tokens]
-        return stems

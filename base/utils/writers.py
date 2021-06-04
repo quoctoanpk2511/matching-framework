@@ -24,27 +24,23 @@ class Writer():
         Method to write data
         """
 
-class CSVWriter(Writer):
+class FileWriter(Writer):
     """
     Class writer for write dataset to csv file.
     """
 
-    def __init__(self, csv_file, dataset):
+    def __init__(self, file_name, dataset):
         """
 
         Args:
-            csv_file: String
+            file_name: String
         """
-        super(CSVWriter, self).__init__(dataset=dataset)
-        self.csv_file = csv_file
-        """Name of csv file to writing the dataset"""
-
-    def write(self):
-        self.dataset.df.to_csv(self.csv_file, encoding='utf-8', index=False)
+        super(FileWriter, self).__init__(dataset=dataset)
+        self.file_name = file_name
+        """Name of file to writing the dataset"""
 
 
-import MySQLdb
-class MySQLWriter(Writer):
+class DBWriter(Writer):
     """
         Class writer for write dataset to MySQL database.
     """
@@ -58,7 +54,7 @@ class MySQLWriter(Writer):
             db_passwd: String
             db_name: String
         """
-        super(MySQLWriter, self).__init__(dataset=dataset)
+        super(DBWriter, self).__init__(dataset=dataset)
         self.db_host = db_host
         """Database host name to connect"""
         self.db_user = db_user
@@ -67,8 +63,8 @@ class MySQLWriter(Writer):
         """Database password to connect"""
         self.db_name = db_name
         """Database name to connect"""
-        self.connect()
 
+    @abc.abstractmethod
     def connect(self):
         """
         Method for create an engine to connect to the MySQL database.
@@ -76,5 +72,6 @@ class MySQLWriter(Writer):
         self.con = sqlalchemy.create_engine("mysql://{user}:{pw}@{host}/{db}"
 				.format(host=self.db_host, db=self.db_name, user=self.db_user, pw=self.db_passwd))
 
-    def insert(self, table_name):
-        self.dataset.df[self.dataset.df.columns.difference(['id_left', 'id_right'])].to_sql(table_name, con=self.con, if_exists='append', index=False)
+    @abc.abstractmethod
+    def write(self, table_name):
+        return

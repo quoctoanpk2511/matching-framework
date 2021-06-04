@@ -1,5 +1,4 @@
 import abc
-import pandas as pd
 from base.structures.data import (
     Dataset,
 )
@@ -20,34 +19,40 @@ class Reader():
         self.dataset = Dataset()
 
     @abc.abstractmethod
+    def read_func(self):
+        """
+        Function to read dataset.
+        """
+        return
+
     def read(self):
         """
+        Method to read dataset
+
         Returns: Dataset
         """
+        self.dataset.df = self.read_func()
+        return self.dataset
 
 
-class CSVReader(Reader):
+class FileReader(Reader):
     """
     Class reader for read data from csv file.
     """
 
-    def __init__(self, csv_file):
+    def __init__(self, file_name):
         """
 
         Args:
-            csv_file: String
+            file_name: String
         """
         super().__init__()
-        self.csv_file = csv_file
-        """Name of csv file that contains a dataset"""
-
-    def read(self):
-        self.dataset.df = pd.read_csv(self.csv_file)
-        return self.dataset
+        self.file_name = file_name
+        """Name of file that contains a dataset"""
 
 
 import MySQLdb
-class MySQLReader(Reader):
+class DBReader(Reader):
     """
     Class reader for read data from MySQL database.
     """
@@ -72,18 +77,11 @@ class MySQLReader(Reader):
         """Database name to connect"""
         self.sql = sql
         """Query to select data from MySQL database"""
-        self.connect()
+        # self.connect()
 
+    @abc.abstractmethod
     def connect(self):
         """
-        Method for create a connection to the MySQL database.
+        Method for create a connection to the database.
         """
-        self.con = MySQLdb.connect(
-            host=self.db_host,
-            user=self.db_user,
-            passwd=self.db_passwd,
-            db=self.db_name)
-
-    def read(self):
-        self.dataset.df = pd.read_sql(sql=self.sql, con=self.con)
-        return self.dataset
+        return

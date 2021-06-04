@@ -26,6 +26,9 @@ class DataPreprocessor:
         """
         Do data preprocessing.
         """
+        self.drop_record_with_none_value_in_feature()
+        self.id_preprocess()
+        self.initiate_match_record()
 
     def id_preprocess(self):
         """
@@ -68,11 +71,3 @@ class DataPreprocessor:
     def drop_record_with_none_value_in_feature(self):
         self.matcher.left_data.df = self.matcher.left_data.df.dropna(subset=self.matcher.features_left)
         self.matcher.right_data.df = self.matcher.right_data.df.dropna(subset=self.matcher.features_right)
-
-
-class DefaultDataPreprocessor(DataPreprocessor):
-
-    def data_preprocess(self):
-        self.drop_record_with_none_value_in_feature()
-        self.id_preprocess()
-        self.initiate_match_record()
