@@ -1,5 +1,5 @@
 import abc
-from base.structures.data import (
+from dmf.structures.data import (
     Dataset,
 )
 

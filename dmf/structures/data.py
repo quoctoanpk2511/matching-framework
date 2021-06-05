@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from base.preprocess.tokenizers import Tokenizer
+from dmf.preprocess.tokenizers import Tokenizer
 
 
 class Dataset():

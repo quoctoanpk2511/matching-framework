@@ -1,8 +1,8 @@
-from base.preprocess.data_preprocessor import DataPreprocessor
-from base.structures.data import Dataset
-from base.scores.vectorizers import Vectorizer
-from base.scores.similarities import SimilarityScorer
-from base.scores.clusters import Clustering
+from dmf.preprocess.data_preprocessor import DataPreprocessor
+from dmf.structures.data import Dataset
+from dmf.scores.vectorizers import Vectorizer
+from dmf.scores.similarities import SimilarityScorer
+from dmf.scores.clusters import Clustering
 
 
 class Matcher():

@@ -11,7 +11,7 @@ class DataPreprocessor:
         Add the match object on the Dataprocess.
 
         Args:
-            matcher: base.match.matchers.Matcher
+            matcher: dmf.match.matchers.Matcher
 
         Returns: None
 
