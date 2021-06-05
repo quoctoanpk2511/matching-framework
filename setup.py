@@ -12,13 +12,13 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/quoctoanpk2511/matching-framework",
-    packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     package_dir={"": "base"},
+    packages=setuptools.find_packages(where="base"),
     python_requires='>=3.8',
     install_requires=[
         "numpy==1.19.3",
