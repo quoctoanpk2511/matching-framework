@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="matchingframework", # It should be unique name
-    version="0.5.1",
+    name="matchframework", # It should be unique name
+    version="0.1.1",
     description="The data matching framework for two dataset",
     long_description=long_description,
     long_description_content_type="text/markdown",
