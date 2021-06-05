@@ -1,8 +1,9 @@
 from base.preprocess.data_preprocessor import DataPreprocessor
-from base.structures.data import Dataset, MappingFeature
+from base.structures.data import Dataset
 from base.scores.vectorizers import Vectorizer
 from base.scores.similarities import SimilarityScorer
 from base.scores.clusters import Clustering
+
 
 class Matcher():
 

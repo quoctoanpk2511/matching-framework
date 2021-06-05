@@ -5,24 +5,32 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="matchingframework", # It should be unique name
-    version="0.0.1",
+    version="0.1.1",
     author="Phan Quoc Toan",
-    author_email="author@email.com",
-    description="A small title of the package",
+    author_email="quoctoanpk2511@gmail.com",
+    description="The data matching framework for two dataset",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/quoctoanpk2511/matching-framework",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-install_requires=[
+    package_dir={"": "base"},
+    python_requires='>=3.8',
+    install_requires=[
         "numpy==1.19.3",
+        "pandas==1.1.5",
     ],
-
-    python_requires='>=3.6',
-
-
+    project_urls={
+        'Homepage': 'https://github.com/quoctoanpk2511/matching-framework',
+    },
+    entry_points={
+        'console_scripts': [
+            'git-tagup=git_tagup.__main__:main',
+            'gtu=git_tagup.__main__:main',
+        ],
+    },
 )

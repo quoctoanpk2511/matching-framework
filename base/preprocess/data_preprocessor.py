@@ -1,7 +1,5 @@
 import abc
 
-from base.structures.data import Dataset
-
 
 class DataPreprocessor:
     """
