@@ -12,7 +12,7 @@ class SimilarityScorer:
                 Add the match object on the SimilarityScorer.
 
                 Args:
-                    matcher: dmf.match.matchers.Matcher
+                    matcher: matchingframework.match.matchers.Matcher
 
                 Returns: None
 

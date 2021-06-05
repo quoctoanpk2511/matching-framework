@@ -11,7 +11,7 @@ class Vectorizer:
                 Add the match object on the Vectorizer.
 
                 Args:
-                    matcher: dmf.match.matchers.Matcher
+                    matcher: matchingframework.match.matchers.Matcher
 
                 Returns: None
 

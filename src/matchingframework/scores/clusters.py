@@ -8,7 +8,7 @@ class Clustering:
         Add the match object on the Clustering.
 
         Args:
-            matcher: dmf.match.matchers.Matcher
+            matcher: matchingframework.match.matchers.Matcher
 
         Returns: None
 

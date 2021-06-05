@@ -11,7 +11,7 @@ class Tokenizer():
         Add the match object on the Tokenizer.
 
         Args:
-            matcher: dmf.match.matchers.Matcher
+            matcher: matchingframework.match.matchers.Matcher
 
         Returns: None
 
