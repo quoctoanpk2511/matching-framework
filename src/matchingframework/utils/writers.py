@@ -1,7 +1,5 @@
 import abc
-from src.dmf.structures import (
-    Dataset,
-)
+from src.matchingframework.structures.data import Dataset
 
 
 class Writer():
